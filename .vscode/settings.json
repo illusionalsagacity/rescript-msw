@@ -1,0 +1,13 @@
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "package-lock.json": true,
+    ".bsb.lock": true
+  },
+  "files.exclude": {
+    ".graphql_ppx_cache": true,
+    ".merlin": true
+  }
+}

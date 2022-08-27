@@ -1,0 +1,5 @@
+node_modules
+lib
+.merlin
+.graphql_ppx_cache
+.bsb.lock

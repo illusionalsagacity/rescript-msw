@@ -1,0 +1,37 @@
+{
+  "package-specs": ["commonjs"],
+  "suffix": ".cjs",
+  "name": "MSW",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": false
+    },
+    {
+      "dir": "__tests__",
+      "subdirs": false,
+      "type": "dev"
+    }
+  ],
+  "bsc-flags": [],
+  "bs-dependencies": ["rescript-apollo-client"],
+  "ppx-flags": ["@reasonml-community/graphql-ppx/ppx"],
+  "bs-dev-dependencies": [
+    "@rescript/react",
+    "@reasonml-community/graphql-ppx",
+    "@glennsl/rescript-jest",
+    "@glennsl/rescript-json-combinators",
+    "@ryyppy/rescript-promise"
+  ],
+  "graphql": {
+    "schema": "graphql_schema.json",
+    "apolloMode": true,
+    "extendMutation": "ApolloClient.GraphQL_PPX.ExtendMutation",
+    "extendQuery": "ApolloClient.GraphQL_PPX.ExtendQuery",
+    "extendSubscription": "ApolloClient.GraphQL_PPX.ExtendSubscription",
+    "templateTagReturnType": "ApolloClient.GraphQL_PPX.templateTagReturnType",
+    "templateTagImport": "gql",
+    "templateTagLocation": "@apollo/client",
+    "templateTagIsFunction": true
+  }
+}

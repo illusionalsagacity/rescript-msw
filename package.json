@@ -1,0 +1,45 @@
+{
+  "name": "@illusionalsagacity/rescript-msw",
+  "version": "0.1.0",
+  "description": "ReScript bindings for MSW",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/illusionalsagacity/rescript-msw"
+  },
+  "scripts": {
+    "build": "rescript build -with-deps",
+    "clean": "rescript clean",
+    "start": "rescript build -w",
+    "test": "jest --config jest.config.mjs"
+  },
+  "keywords": [
+    "ReScript",
+    "Bucklescript",
+    "MSW",
+    "testing"
+  ],
+  "author": "rob",
+  "license": "MIT",
+  "devDependencies": {
+    "@apollo/client": "^3.6.9",
+    "@changesets/cli": "^2.24.3",
+    "@glennsl/rescript-jest": "~0.9.1",
+    "@glennsl/rescript-json-combinators": "^1.0.0",
+    "@reasonml-community/graphql-ppx": "^1.2.3",
+    "@rescript/react": "^0.10.3",
+    "@ryyppy/rescript-promise": "^2.1.0",
+    "cross-fetch": "^3.1.5",
+    "jest": "^28.1.0",
+    "jest-light-runner": "^0.3.0",
+    "msw": "~0.44.2",
+    "react": "^18.2.0",
+    "rescript": "~10.0.0",
+    "rescript-apollo-client": "^3.1.0"
+  },
+  "peerDependencies": {
+    "@apollo/client": "*",
+    "msw": "~0.44.0",
+    "rescript": "^10.0.0",
+    "rescript-apollo-client": "^3.1.0"
+  }
+}
