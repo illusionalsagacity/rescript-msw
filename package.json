@@ -71,7 +71,8 @@
     "@apollo/client": "*",
     "msw": "~0.44.0",
     "rescript": "^10.0.0",
-    "rescript-apollo-client": "^3.1.0"
+    "rescript-apollo-client": "^3.1.0",
+    "@glennsl/rescript-fetch": "~0.1.4"
   },
   "packageManager": "yarn@3.2.3"
 }
