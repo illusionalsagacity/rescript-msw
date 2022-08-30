@@ -1,7 +1,7 @@
 {
   "package-specs": ["commonjs"],
   "suffix": ".cjs",
-  "name": "MSW",
+  "name": "@illusionalsagacity/rescript-msw",
   "sources": [
     {
       "dir": "src",
