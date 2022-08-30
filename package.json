@@ -21,7 +21,8 @@
     "test": "jest --config jest.config.mjs"
   },
   "files": [
-    "/src"
+    "/src",
+    "bsconfig.json"
   ],
   "devDependencies": {
     "@apollo/client": "^3.6.9",
