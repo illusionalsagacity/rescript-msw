@@ -33,15 +33,13 @@ module Encode = {
 }
 
 describe("MSW__REST", () => {
-  open MSW
+  let server = MSW.setupServer()
 
-  let server = setupServer()
+  beforeAll(() => MSW.Server.listenWithOptions(server, {onUnhandledRequest: #error}))
 
-  beforeAll(() => Server.listenWithOptions(server, {onUnhandledRequest: #error}))
+  afterEach(() => MSW.Server.resetHandlers(server))
 
-  afterEach(() => Server.resetHandlers(server))
-
-  afterAll(() => Server.close(server))
+  afterAll(() => MSW.Server.close(server))
 
   describe("get", () => {
     testPromise(
@@ -51,11 +49,17 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        server->Server.use(
-          REST.get(
+        server->MSW.Server.use(
+          MSW.REST.Raw.get(
             #String("http://localhost:8080/"),
-            (_req, {res, _}, ctx) => {
-              res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
+            (. _req, res, ctx) => {
+              MSW__Raw__Response.res(
+                res,
+                [
+                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
+                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                ],
+              )
             },
           ),
         )
@@ -83,11 +87,17 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        server->Server.use(
-          REST.post(
+        server->MSW.Server.use(
+          MSW.REST.Raw.post(
             #String("http://localhost:8080/"),
-            (_req, {res, _}, ctx) => {
-              res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
+            (. _req, res, ctx) => {
+              MSW__Raw__Response.res(
+                res,
+                [
+                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
+                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                ],
+              )
             },
           ),
         )
@@ -115,11 +125,17 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        server->Server.use(
-          REST.put(
+        server->MSW.Server.use(
+          MSW.REST.Raw.put(
             #String("http://localhost:8080/"),
-            (_req, {res, _}, ctx) => {
-              res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
+            (. _req, res, ctx) => {
+              MSW__Raw__Response.res(
+                res,
+                [
+                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
+                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                ],
+              )
             },
           ),
         )
@@ -146,11 +162,17 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        server->Server.use(
-          REST.patch(
+        server->MSW.Server.use(
+          MSW.REST.Raw.patch(
             #String("http://localhost:8080/"),
-            (_req, {res, _}, ctx) => {
-              res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
+            (. _req, res, ctx) => {
+              MSW__Raw__Response.res(
+                res,
+                [
+                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
+                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                ],
+              )
             },
           ),
         )
@@ -173,11 +195,14 @@ describe("MSW__REST", () => {
     testPromise(
       "should return data for a response",
       () => {
-        server->Server.use(
-          REST.delete(
+        server->MSW.Server.use(
+          MSW.REST.Raw.delete(
             #String("http://localhost:8080/"),
-            (_req, {res, _}, ctx) => {
-              res()->ctx.status(204, ~text="No Content")
+            (. _req, res, ctx) => {
+              MSW__Raw__Response.res(
+                res,
+                [ctx->MSW__REST__Raw__Context.statusWithText(204, "No Content")],
+              )
             },
           ),
         )
@@ -194,11 +219,14 @@ describe("MSW__REST", () => {
     testPromise(
       "should return data for a response",
       () => {
-        server->Server.use(
-          REST.options(
+        server->MSW.Server.use(
+          MSW.REST.Raw.options(
             #String("http://localhost:8080/"),
-            (_req, {res, _}, ctx) => {
-              res()->ctx.status(204, ~text="No Content")
+            (. _req, res, ctx) => {
+              MSW__Raw__Response.res(
+                res,
+                [ctx->MSW__REST__Raw__Context.statusWithText(204, "No Content")],
+              )
             },
           ),
         )
@@ -216,11 +244,11 @@ describe("MSW__REST", () => {
     testPromise(
       "should return error for networkError",
       () => {
-        server->Server.use(
-          REST.get(
+        server->MSW.Server.use(
+          MSW.REST.Raw.get(
             #String("http://localhost:8080/"),
-            (_req, {networkError, _}, _ctx) => {
-              networkError("Oops")
+            (. _req, res, _ctx) => {
+              MSW__Raw__Response.networkError(res, "Oops")
             },
           ),
         )

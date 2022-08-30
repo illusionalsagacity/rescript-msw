@@ -1,7 +1,6 @@
 open MSW__Common
 
 type t<'body>
-type xml = string
 
 @send external body: (t<'body>, 'body) => responseTransformer = "body"
 
@@ -38,7 +37,7 @@ external json: (t<Js.Json.t>, Js.Json.t) => responseTransformer = "json"
 /**
  * https://mswjs.io/docs/api/context/xml
  */ @send
-external xml: (t<xml>, xml) => responseTransformer = "xml"
+external xml: (t<string>, string) => responseTransformer = "xml"
 
 /**
  * https://mswjs.io/docs/api/context/delay
@@ -48,7 +47,7 @@ external delay: (t<'body>, int) => responseTransformer = "delay"
 /**
  * https://mswjs.io/docs/api/context/fetch
  */ @send
-external fetch: (t<'body>, MSW__REST__Request.t<'any>) => Js.Promise.t<'response> = "fetch"
+external fetch: (t<'body>, MSW__REST__Request.t<'requestBody>) => Js.Promise.t<'response> = "fetch"
 
 // TODO
 // @send

@@ -1,16 +1,20 @@
+/***
+ * This module does not use the Fetch.Request type because it has the 'body and
+ * 'variables type parameters, which enforce type safety for MSW__GraphQL_PPX
+ */
 type t<'body, 'variables> = {
   url: Url.t,
-  method: Request.method,
-  headers: Headers.t,
+  method: Fetch.method,
+  headers: Fetch.Headers.t,
   cookies: Js.Dict.t<string>,
   params: Js.Dict.t<string>,
   bodyUsed: bool,
-  cache: Request.cache,
-  mode: Request.mode,
-  credentials: Request.credentials,
-  redirect: Request.redirect,
+  cache: Fetch.requestCache,
+  mode: Fetch.requestMode,
+  credentials: Fetch.requestCredentials,
+  redirect: Fetch.requestRedirect,
   referrer: string,
-  referrerPolicy: Request.referrerPolicy,
+  referrerPolicy: Fetch.referrerPolicy,
   integrity: string,
   destination: string,
   keepalive: bool,

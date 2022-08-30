@@ -2,15 +2,11 @@
   "name": "@illusionalsagacity/rescript-msw",
   "version": "0.1.0",
   "description": "ReScript bindings for MSW",
+  "author": "rob",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/illusionalsagacity/rescript-msw"
-  },
-  "scripts": {
-    "build": "rescript build -with-deps",
-    "clean": "rescript clean",
-    "start": "rescript build -w",
-    "test": "jest --config jest.config.mjs"
   },
   "keywords": [
     "ReScript",
@@ -18,11 +14,19 @@
     "MSW",
     "testing"
   ],
-  "author": "rob",
-  "license": "MIT",
+  "scripts": {
+    "build": "rescript build -with-deps",
+    "clean": "rescript clean",
+    "start": "rescript build -w",
+    "test": "jest --config jest.config.mjs"
+  },
+  "files": [
+    "/src"
+  ],
   "devDependencies": {
     "@apollo/client": "^3.6.9",
     "@changesets/cli": "^2.24.3",
+    "@glennsl/rescript-fetch": "^0.1.4",
     "@glennsl/rescript-jest": "~0.9.1",
     "@glennsl/rescript-json-combinators": "^1.0.0",
     "@reasonml-community/graphql-ppx": "^1.2.3",
@@ -36,10 +40,37 @@
     "rescript": "~10.0.0",
     "rescript-apollo-client": "^3.1.0"
   },
+  "dependenciesMeta": {
+    "@glennsl/rescript-jest@0.9.1": {
+      "unplugged": true
+    },
+    "@glennsl/rescript-json-combinators@1.0.0": {
+      "unplugged": true
+    },
+    "@reasonml-community/graphql-ppx@1.2.3": {
+      "unplugged": true
+    },
+    "@reasonml-community/graphql-ppx": {
+      "unplugged": true
+    },
+    "@rescript/react@0.10.3": {
+      "unplugged": true
+    },
+    "@ryyppy/rescript-promise@2.1.0": {
+      "unplugged": true
+    },
+    "rescript@10.0.0": {
+      "unplugged": true
+    },
+    "rescript-apollo-client@3.1.0": {
+      "unplugged": true
+    }
+  },
   "peerDependencies": {
     "@apollo/client": "*",
     "msw": "~0.44.0",
     "rescript": "^10.0.0",
     "rescript-apollo-client": "^3.1.0"
-  }
+  },
+  "packageManager": "yarn@3.2.3"
 }

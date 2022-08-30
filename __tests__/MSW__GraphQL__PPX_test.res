@@ -38,13 +38,13 @@ describe("rescript-msw", () => {
   testPromise("should return data for response", () => {
     server->MSW.Server.use(
       userQueryHandler(
-        ({variables}, {res}, ctx) => {
+        ({variables: {id}, _}, {res, once: _, networkError: _}, ctx) => {
           res()
           ->ctx.status(200)
           ->ctx.data({
             userById: Some({
               __typename: "foo",
-              id: variables.id,
+              id,
               avatarUrl: Some("http://test.com/avatar.png"),
               fullName: "John Doe",
             }),
@@ -56,36 +56,37 @@ describe("rescript-msw", () => {
     client.query(~query=module(UserQuery), {id: "test_id"})->Promise.thenResolve(
       result => {
         result
-        ->Belt.Result.getExn
         ->expect
-        ->toEqual({
-          networkStatus: Ready,
-          error: None,
-          loading: false,
-          data: {
-            userById: Some({
-              __typename: "foo",
-              id: "test_id",
-              avatarUrl: Some("http://test.com/avatar.png"),
-              fullName: "John Doe",
-            }),
-          },
-        })
+        ->toEqual(
+          Ok({
+            networkStatus: Ready,
+            error: None,
+            loading: false,
+            data: {
+              userById: Some({
+                __typename: "foo",
+                id: "test_id",
+                avatarUrl: Some("http://test.com/avatar.png"),
+                fullName: "John Doe",
+              }),
+            },
+          }),
+        )
       },
     )
   })
 
   testPromise("should return error for networkError", () => {
     server->MSW.Server.use(
-      userQueryHandler((_req, {networkError}, _ctx) => networkError("Not found")),
+      userQueryHandler((_req, {networkError, _}, _ctx) => networkError("Not found")),
     )
 
     client.query(~query=module(UserQuery), {id: "test_id"})->Promise.then(
       result => {
         Promise.resolve(
           switch result {
-          | Error({networkError: Some(_)}) => expect(true)->toBe(true)
-          | _ => false->expect->toBe(true)
+          | Error({networkError: Some(_), _}) => expect(true)->toBe(true)
+          | Error(_) | Ok(_) => false->expect->toBe(true)
           },
         )
       },

@@ -14,7 +14,7 @@
     }
   ],
   "bsc-flags": [],
-  "bs-dependencies": ["rescript-apollo-client"],
+  "bs-dependencies": ["rescript-apollo-client", "@glennsl/rescript-fetch"],
   "ppx-flags": ["@reasonml-community/graphql-ppx/ppx"],
   "bs-dev-dependencies": [
     "@rescript/react",
@@ -23,6 +23,10 @@
     "@glennsl/rescript-json-combinators",
     "@ryyppy/rescript-promise"
   ],
+  "warnings": {
+    "number": "+A-42-48",
+    "error": "+A-3-44-102"
+  },
   "graphql": {
     "schema": "graphql_schema.json",
     "apolloMode": true,
