@@ -2,6 +2,9 @@
  * https://mswjs.io/docs/api/rest
  */
 
+module Context = MSW__REST__Raw__Context
+module Response = MSW__Raw__Response
+
 @module("msw") @scope("rest")
 external all: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],

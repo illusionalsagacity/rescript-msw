@@ -33,6 +33,7 @@ module Encode = {
 }
 
 describe("MSW__REST", () => {
+  open MSW.REST.Raw
   let server = MSW.setupServer()
 
   beforeAll(() => MSW.Server.listenWithOptions(server, {onUnhandledRequest: #error}))
@@ -50,14 +51,14 @@ describe("MSW__REST", () => {
         }
 
         server->MSW.Server.use(
-          MSW.REST.Raw.get(
+          get(
             #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
-              MSW__Raw__Response.res(
+              Response.res(
                 res,
                 [
-                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
-                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                  ctx->Context.statusWithText(200, "OK"),
+                  ctx->Context.json(Encode.stockPrice(value)),
                 ],
               )
             },
@@ -88,14 +89,14 @@ describe("MSW__REST", () => {
         }
 
         server->MSW.Server.use(
-          MSW.REST.Raw.post(
+          post(
             #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
-              MSW__Raw__Response.res(
+              Response.res(
                 res,
                 [
-                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
-                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                  ctx->Context.statusWithText(200, "OK"),
+                  ctx->Context.json(Encode.stockPrice(value)),
                 ],
               )
             },
@@ -126,14 +127,14 @@ describe("MSW__REST", () => {
         }
 
         server->MSW.Server.use(
-          MSW.REST.Raw.put(
+          put(
             #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
-              MSW__Raw__Response.res(
+              Response.res(
                 res,
                 [
-                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
-                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                  ctx->Context.statusWithText(200, "OK"),
+                  ctx->Context.json(Encode.stockPrice(value)),
                 ],
               )
             },
@@ -163,14 +164,14 @@ describe("MSW__REST", () => {
         }
 
         server->MSW.Server.use(
-          MSW.REST.Raw.patch(
+          patch(
             #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
-              MSW__Raw__Response.res(
+              Response.res(
                 res,
                 [
-                  ctx->MSW__REST__Raw__Context.statusWithText(200, "OK"),
-                  ctx->MSW__REST__Raw__Context.json(Encode.stockPrice(value)),
+                  ctx->Context.statusWithText(200, "OK"),
+                  ctx->Context.json(Encode.stockPrice(value)),
                 ],
               )
             },
@@ -196,13 +197,10 @@ describe("MSW__REST", () => {
       "should return data for a response",
       () => {
         server->MSW.Server.use(
-          MSW.REST.Raw.delete(
+          delete(
             #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
-              MSW__Raw__Response.res(
-                res,
-                [ctx->MSW__REST__Raw__Context.statusWithText(204, "No Content")],
-              )
+              Response.res(res, [ctx->Context.statusWithText(204, "No Content")])
             },
           ),
         )
@@ -220,13 +218,10 @@ describe("MSW__REST", () => {
       "should return data for a response",
       () => {
         server->MSW.Server.use(
-          MSW.REST.Raw.options(
+          options(
             #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
-              MSW__Raw__Response.res(
-                res,
-                [ctx->MSW__REST__Raw__Context.statusWithText(204, "No Content")],
-              )
+              Response.res(res, [ctx->Context.statusWithText(204, "No Content")])
             },
           ),
         )
@@ -245,10 +240,10 @@ describe("MSW__REST", () => {
       "should return error for networkError",
       () => {
         server->MSW.Server.use(
-          MSW.REST.Raw.get(
+          get(
             #URL("http://localhost:8080/"),
             (. _req, res, _ctx) => {
-              MSW__Raw__Response.networkError(res, "Oops")
+              Response.networkError(res, "Oops")
             },
           ),
         )

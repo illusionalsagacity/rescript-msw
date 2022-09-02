@@ -1,4 +1,6 @@
 module Raw = MSW__REST__Raw
+module Request = MSW__REST__Request
+module Response = MSW__Raw__Response
 
 type responseBuilder = MSW__Common.responseBuilder
 

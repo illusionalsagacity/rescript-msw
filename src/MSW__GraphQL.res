@@ -2,6 +2,9 @@
  * https://mswjs.io/docs/api/graphql
  */
 
+module Context = MSW__GraphQL__Context
+module Response = MSW__Raw__Response
+
 /**
  * https://mswjs.io/docs/api/graphql/query
  */ @module("msw") @scope("graphql")
