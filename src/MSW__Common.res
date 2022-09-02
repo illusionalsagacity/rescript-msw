@@ -6,6 +6,7 @@ module type GraphQLOperation = {
   type t
   type t_variables
 
+  let query: ApolloClient.GraphQL_PPX.templateTagReturnType
   let parse: Raw.t => t
   let serialize: t => Raw.t
   let serializeVariables: t_variables => Raw.t_variables
@@ -13,5 +14,4 @@ module type GraphQLOperation = {
 
 type requestHandler
 type responseTransformer = MSW__Raw__Response.t => MSW__Raw__Response.t
-type responseResolver = array<responseTransformer> => MSW__Raw__Response.t
 type responseBuilder = array<responseTransformer>

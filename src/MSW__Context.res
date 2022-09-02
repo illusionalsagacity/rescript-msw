@@ -32,22 +32,22 @@ module WrappedGraphQL = {
         )
       },
       set: (~header, ~value, responseBuilder) => {
-        Js.Array2.concat(responseBuilder, [ctx->MSW__GraphQL__Context.set(header, value)])
+        Js.Array2.concat(responseBuilder, [MSW__GraphQL__Context.set(ctx, header, value)])
       },
       data: (responseBuilder, data) => {
         Js.Array2.concat(
           responseBuilder,
-          [ctx->MSW__GraphQL__Context.data(Operation.serialize(data))],
+          [MSW__GraphQL__Context.data(ctx, Operation.serialize(data))],
         )
       },
       extensions: (responseBuilder, extensions) => {
-        Js.Array2.concat(responseBuilder, [ctx->MSW__GraphQL__Context.extensions(extensions)])
+        Js.Array2.concat(responseBuilder, [MSW__GraphQL__Context.extensions(ctx, extensions)])
       },
       errors: (responseBuilder, errors) => {
-        Js.Array2.concat(responseBuilder, [ctx->MSW__GraphQL__Context.errors(errors)])
+        Js.Array2.concat(responseBuilder, [MSW__GraphQL__Context.errors(ctx, errors)])
       },
       delay: (responseBuilder, delay) => {
-        Js.Array2.concat(responseBuilder, [ctx->MSW__GraphQL__Context.delay(delay)])
+        Js.Array2.concat(responseBuilder, [MSW__GraphQL__Context.delay(ctx, delay)])
       },
     }
   }

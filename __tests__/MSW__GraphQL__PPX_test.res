@@ -11,6 +11,19 @@ module UserQuery = %graphql(`
   }
 `)
 
+module QueryB = %graphql(`
+  fragment UserFragment on User {
+    id
+    avatarUrl
+    fullName
+  }
+  query UserQueryWithFragment($id: ID!) {
+    userById(id: $id) {
+      ...UserFragment
+    }
+  }
+`)
+
 describe("rescript-msw", () => {
   let client = {
     open ApolloClient
@@ -33,7 +46,7 @@ describe("rescript-msw", () => {
     MSW.Server.close(server)
   })
 
-  let userQueryHandler = MSW.GraphQL_PPX.query(module(UserQuery), #String("UserQuery"))
+  let userQueryHandler = MSW.GraphQL_PPX.operation(module(QueryB.UserQueryWithFragment))
 
   testPromise("should return data for response", () => {
     server->MSW.Server.use(
@@ -43,7 +56,7 @@ describe("rescript-msw", () => {
           ->ctx.status(200)
           ->ctx.data({
             userById: Some({
-              __typename: "foo",
+              __typename: "User",
               id,
               avatarUrl: Some("http://test.com/avatar.png"),
               fullName: "John Doe",
@@ -53,7 +66,7 @@ describe("rescript-msw", () => {
       ),
     )
 
-    client.query(~query=module(UserQuery), {id: "test_id"})->Promise.thenResolve(
+    client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})->Promise.thenResolve(
       result => {
         result
         ->expect
@@ -64,7 +77,7 @@ describe("rescript-msw", () => {
             loading: false,
             data: {
               userById: Some({
-                __typename: "foo",
+                __typename: "User",
                 id: "test_id",
                 avatarUrl: Some("http://test.com/avatar.png"),
                 fullName: "John Doe",
@@ -81,7 +94,7 @@ describe("rescript-msw", () => {
       userQueryHandler((_req, {networkError, _}, _ctx) => networkError("Not found")),
     )
 
-    client.query(~query=module(UserQuery), {id: "test_id"})->Promise.then(
+    client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})->Promise.then(
       result => {
         Promise.resolve(
           switch result {

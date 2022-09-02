@@ -29,7 +29,7 @@ open MSW
 let server = setupServer()
 server->Server.listenWithOptions({onUnhandledRequest: #error})
 server->Server.use(
-  GraphQL_PPX.query(module(UserQuery), #String("UserQuery"), ({variables}, {res}, ctx) => {
+  GraphQL_PPX.query(module(UserQuery), #Name("UserQuery"), ({variables}, {res}, ctx) => {
     res()
     ->ctx.status(200)
     ->ctx.data({

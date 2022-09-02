@@ -51,7 +51,7 @@ describe("MSW__REST", () => {
 
         server->MSW.Server.use(
           MSW.REST.Raw.get(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
               MSW__Raw__Response.res(
                 res,
@@ -89,7 +89,7 @@ describe("MSW__REST", () => {
 
         server->MSW.Server.use(
           MSW.REST.Raw.post(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
               MSW__Raw__Response.res(
                 res,
@@ -127,7 +127,7 @@ describe("MSW__REST", () => {
 
         server->MSW.Server.use(
           MSW.REST.Raw.put(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
               MSW__Raw__Response.res(
                 res,
@@ -164,7 +164,7 @@ describe("MSW__REST", () => {
 
         server->MSW.Server.use(
           MSW.REST.Raw.patch(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
               MSW__Raw__Response.res(
                 res,
@@ -197,7 +197,7 @@ describe("MSW__REST", () => {
       () => {
         server->MSW.Server.use(
           MSW.REST.Raw.delete(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
               MSW__Raw__Response.res(
                 res,
@@ -221,7 +221,7 @@ describe("MSW__REST", () => {
       () => {
         server->MSW.Server.use(
           MSW.REST.Raw.options(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, ctx) => {
               MSW__Raw__Response.res(
                 res,
@@ -246,7 +246,7 @@ describe("MSW__REST", () => {
       () => {
         server->MSW.Server.use(
           MSW.REST.Raw.get(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (. _req, res, _ctx) => {
               MSW__Raw__Response.networkError(res, "Oops")
             },

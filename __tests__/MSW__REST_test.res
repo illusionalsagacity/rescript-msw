@@ -53,7 +53,7 @@ describe("MSW__REST", () => {
 
         server->Server.use(
           REST.get(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {res, _}, ctx) => {
               res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
             },
@@ -85,7 +85,7 @@ describe("MSW__REST", () => {
 
         server->Server.use(
           REST.post(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {res, _}, ctx) => {
               res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
             },
@@ -117,7 +117,7 @@ describe("MSW__REST", () => {
 
         server->Server.use(
           REST.put(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {res, _}, ctx) => {
               res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
             },
@@ -148,7 +148,7 @@ describe("MSW__REST", () => {
 
         server->Server.use(
           REST.patch(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {res, _}, ctx) => {
               res()->ctx.status(200, ~text="OK")->ctx.json(Encode.stockPrice(value))
             },
@@ -175,7 +175,7 @@ describe("MSW__REST", () => {
       () => {
         server->Server.use(
           REST.delete(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {res, _}, ctx) => {
               res()->ctx.status(204, ~text="No Content")
             },
@@ -196,7 +196,7 @@ describe("MSW__REST", () => {
       () => {
         server->Server.use(
           REST.options(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {res, _}, ctx) => {
               res()->ctx.status(204, ~text="No Content")
             },
@@ -218,7 +218,7 @@ describe("MSW__REST", () => {
       () => {
         server->Server.use(
           REST.get(
-            #String("http://localhost:8080/"),
+            #URL("http://localhost:8080/"),
             (_req, {networkError, _}, _ctx) => {
               networkError("Oops")
             },
