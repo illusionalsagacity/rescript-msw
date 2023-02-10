@@ -745,17 +745,19 @@ __metadata:
     "@rescript/react": ~0.11.0
     "@ryyppy/rescript-promise": ^2.1.0
     cross-fetch: ^3.1.5
+    graphql: ^16.6.0
+    graphql-tag: "npm:^2.12.6"
     jest: ^28.1.0
     jest-light-runner: ^0.3.0
-    msw: ~0.44.2
+    msw: ~0.45.0
     react: ^18.2.0
     rescript: ~10.1.2
-    rescript-apollo-client: ^3.1.0
+    rescript-apollo-client: ^3.2.0
   peerDependencies:
     "@apollo/client": "*"
     "@glennsl/rescript-fetch": ~0.1.4
-    msw: ~0.44.0
-    rescript: ^10.0.0
+    msw: ~0.44.0 || ~0.45.0
+    rescript: ~10.0.0 || ~10.1.0
     rescript-apollo-client: ^3.1.0
   languageName: unknown
   linkType: soft
@@ -3290,7 +3292,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.3.0":
+"graphql@npm:^16.6.0":
   version: 16.6.0
   resolution: "graphql@npm:16.6.0"
   checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
@@ -5371,9 +5373,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw@npm:~0.44.2":
-  version: 0.44.2
-  resolution: "msw@npm:0.44.2"
+"msw@npm:~0.45.0":
+  version: 0.45.0
+  resolution: "msw@npm:0.45.0"
   dependencies:
     "@mswjs/cookies": ^0.2.2
     "@mswjs/interceptors": ^0.17.2
@@ -5383,7 +5385,6 @@ __metadata:
     chalk: 4.1.1
     chokidar: ^3.4.2
     cookie: ^0.4.2
-    graphql: ^16.3.0
     headers-polyfill: ^3.0.4
     inquirer: ^8.2.0
     is-node-process: ^1.0.1
@@ -5396,13 +5397,16 @@ __metadata:
     type-fest: ^1.2.2
     yargs: ^17.3.1
   peerDependencies:
+    graphql: ^15.0.0 || ^16.0.0
     typescript: ">= 4.2.x <= 4.7.x"
   peerDependenciesMeta:
+    graphql:
+      optional: true
     typescript:
       optional: true
   bin:
     msw: cli/index.js
-  checksum: 739d536ee09d1c0a2cbc9dbe917f167c42115a6548f99780850ce9a63a5e7c377cf9b5f1a3b497e85ce7304025ab22966e997fe73adbd8d2ab968b8685f15a24
+  checksum: a615d77d1c754ffddefc888237d6adcf362c495859b3c6ae43437de88be837ffabb55e11893a4290d304383262e19c80d86b2d33ded123a5bfc5c9e97d8f4884
   languageName: node
   linkType: hard
 
@@ -6137,18 +6141,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rescript-apollo-client@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "rescript-apollo-client@npm:3.1.0"
+"rescript-apollo-client@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "rescript-apollo-client@npm:3.2.0"
   peerDependencies:
     "@apollo/client": ^3.5.0
     "@reasonml-community/graphql-ppx": ^1.0.0
-    "@rescript/react": ^0.10.1
+    "@rescript/react": "*"
     bs-platform: ^8.2.0 || ^9.0.0
+    rescript: ^9.0.0 || ^10.0.0
   peerDependenciesMeta:
     bs-platform:
       optional: true
-  checksum: a384503af49aee35d387f5af2a7da4041d2adba29c7fa13433f964c4322209f0316d24f5181eca5f5cbc4c888dfd4e9c2c9015aa422a6fdef806a083769e0c46
+    rescript:
+      optional: true
+  checksum: 4defbfc1e9926378a7f5ca1e69f18be62009c4c4087fcee3f5f9d229a448dacd25a685259cd9dd913a48f35ce4f7eb9079677721b31b7134bd66f0136db70c35
   languageName: node
   linkType: hard
 
