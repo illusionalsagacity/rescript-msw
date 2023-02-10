@@ -1,5 +1,11 @@
 # @illusionalsagacity/rescript-msw
 
+## 0.1.2
+
+### Patch Changes
+
+- fix: npm publishing mistake
+
 ## 0.1.1
 
 ### Patch Changes

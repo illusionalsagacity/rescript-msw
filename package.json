@@ -1,6 +1,6 @@
 {
   "name": "@illusionalsagacity/rescript-msw",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ReScript bindings for MSW",
   "author": "rob",
   "license": "MIT",
