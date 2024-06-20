@@ -36,27 +36,29 @@ describe("rescript-msw", () => {
     client.clearStore()
   })
 
+  module UserQueryWithFragmentHandler = MSW__GraphQL__Response.Make(QueryB.UserQueryWithFragment)
+
   testPromise("should return data for response", async () => {
     MSWServerInstance.server->MSW.Server.use({
       open MSW.GraphQL
 
       query(
         #Name("UserQueryWithFragment"),
-        (. {variables: {QueryB.UserQueryWithFragment.id: id}, _}, res, ctx) => {
-          res->Response.once([
-            Context.statusWithText(ctx, 200, "OK"),
-            Context.data(
-              ctx,
-              {
-                "userById": {
-                  "__typename": "User",
-                  "id": id,
-                  "avatarUrl": "http://test.com/avatar.png",
-                  "fullName": "John Doe",
-                },
-              },
-            ),
-          ])
+        async ({variables, _}) => {
+          UserQueryWithFragmentHandler.graphql(
+            ~data={
+              userById: Some({
+                __typename: "User",
+                id: variables->Js.Dict.get("id")->Belt.Option.getExn,
+                avatarUrl: Some("http://test.com/avatar.png"),
+                fullName: "John Doe",
+              }),
+            },
+            {
+              status: 200,
+              statusText: "OK",
+            },
+          )
         },
       )
     })
@@ -82,14 +84,43 @@ describe("rescript-msw", () => {
     )
   })
 
-  testPromise("should return error for networkError", async () => {
+  testPromise("should return error for a 503", async () => {
     MSWServerInstance.server->MSW.Server.use(
-      MSW.GraphQL.operation(
-        (. _req, res, _ctx) =>
-          res->MSW__Raw__Response.once([
-            _ctx->MSW__GraphQL__Context.statusWithText(503, "Not found"),
-          ]),
+      MSW.GraphQL.operationWithOptions(
+        async _ => {
+          MSW.Http.Response.make(#Null(Js.null), {status: 503, statusText: "Service Unavailable"})
+        },
+        {once: true},
       ),
+    )
+
+    let result = switch await client.query(
+      ~query=module(QueryB.UserQueryWithFragment),
+      ~errorPolicy=All,
+      {id: "test_id"},
+    ) {
+    | Ok(_) => None
+    | Error(e) => Some(e)
+    }
+
+    let networkError =
+      result
+      ->Belt.Option.getExn
+      ->(v => v.ApolloClient.Types.ApolloError.networkError)
+      ->Belt.Option.getExn
+
+    switch networkError {
+    | ApolloClient.Types.ApolloError.FetchFailure(_) => pass
+    | BadBody(_)
+    | BadStatus(_, _)
+    | ParseError(_) =>
+      fail("expected FetchFailure")
+    }
+  })
+
+  testPromise("should return error for a networkError", async () => {
+    MSWServerInstance.server->MSW.Server.use(
+      MSW.GraphQL.operationWithOptions(async _ => MSW.Http.Response.error(), {once: true}),
     )
 
     let result = switch await client.query(

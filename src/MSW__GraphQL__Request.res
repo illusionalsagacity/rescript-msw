@@ -6,8 +6,6 @@ type t<'body, 'variables> = {
   url: Url.t,
   method: Fetch.method,
   headers: Fetch.Headers.t,
-  cookies: Js.Dict.t<string>,
-  params: Js.Dict.t<string>,
   bodyUsed: bool,
   cache: Fetch.requestCache,
   mode: Fetch.requestMode,
@@ -21,8 +19,14 @@ type t<'body, 'variables> = {
   variables: 'variables,
 }
 
+type requestBody<'variables> = {
+  query: string,
+  operationName: string,
+  variables: 'variables,
+}
+
 @send
 external json: t<'body, 'variables> => Js.Promise.t<'body> = "json"
 
-@send
-external passthrough: t<'body, 'variables> => MSW__Raw__Response.t = "passthrough"
+// @send
+// external passthrough: t<'body, 'variables> => MSW__Raw__Response.t = "passthrough"

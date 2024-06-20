@@ -34,8 +34,8 @@ module Encode = {
 
 let url = "http://localhost:8080"
 
-describe("MSW__REST", () => {
-  open MSW.REST.Raw
+describe("MSW__Http", () => {
+  open MSW
 
   describe("get", () => {
     testPromise(
@@ -45,17 +45,11 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          get(
+        MSWServerInstance.server->Server.use(
+          Http.get(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
@@ -63,8 +57,7 @@ describe("MSW__REST", () => {
         let result = await Fetch.fetch(url, {method: #GET})
         let json = await Fetch.Response.json(result)
 
-        json
-        ->JsonCombinators.Json.decode(Decode.stockPrice)
+        JsonCombinators.Json.decode(json, Decode.stockPrice)
         ->Belt.Result.getExn
         ->expect
         ->toEqual(value)
@@ -80,24 +73,17 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          post(
+        MSWServerInstance.server->Server.use(
+          Http.post(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
 
         let response = await Fetch.fetch(url, {method: #POST})
         let json = await Fetch.Response.json(response)
-
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Belt.Result.getExn
@@ -115,17 +101,11 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          put(
+        MSWServerInstance.server->Server.use(
+          Http.put(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
@@ -140,6 +120,7 @@ describe("MSW__REST", () => {
       },
     )
   })
+
   describe("patch", () => {
     testPromise(
       "should return data for a response",
@@ -148,24 +129,17 @@ describe("MSW__REST", () => {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          patch(
+        MSWServerInstance.server->Server.use(
+          Http.patch(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
 
         let response = await Fetch.fetch(url, {method: #PATCH})
         let json = await Fetch.Response.json(response)
-
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Belt.Result.getExn
@@ -178,11 +152,11 @@ describe("MSW__REST", () => {
     testPromise(
       "should return data for a response",
       async () => {
-        MSWServerInstance.server->MSW.Server.use(
-          delete(
+        MSWServerInstance.server->Server.use(
+          Http.delete(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(res, [ctx->Context.statusWithText(204, "No Content")])
+            async _options => {
+              Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
             },
           ),
         )
@@ -196,11 +170,11 @@ describe("MSW__REST", () => {
     testPromise(
       "should return data for a response",
       async () => {
-        MSWServerInstance.server->MSW.Server.use(
-          options(
+        MSWServerInstance.server->Server.use(
+          Http.options(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(res, [ctx->Context.statusWithText(204, "No Content")])
+            async _options => {
+              Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
             },
           ),
         )
@@ -215,14 +189,7 @@ describe("MSW__REST", () => {
     testPromise(
       "should return error for networkError",
       async () => {
-        MSWServerInstance.server->MSW.Server.use(
-          get(
-            #URL(url),
-            (. _req, res, _ctx) => {
-              Response.networkError(res, "Oops")
-            },
-          ),
-        )
+        MSWServerInstance.server->Server.use(Http.get(#URL(url), async _options => Http.Response.error()))
 
         let result = try {
           let _ = await Fetch.get(url)

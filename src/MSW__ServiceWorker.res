@@ -79,4 +79,12 @@ external restoreHandlers: t => unit = "restoreHandlers"
  * https://mswjs.io/docs/api/setup-worker/print-handlers
  */
 @send
+@deprecated("renamed to listHandlers in MSW >= 2")
 external printHandlers: t => unit = "printHandlers"
+
+/**
+ * https://mswjs.io/docs/api/setup-worker/print-handlers
+ * an alias of "printHandlers" for easier migration
+ */
+@send
+external listHandlers: t => unit = "printHandlers"

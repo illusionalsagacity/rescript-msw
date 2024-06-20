@@ -1,3 +1,4 @@
+// this probably can be turned into the functor that GraphQL_PPX uses
 module type GraphQLOperation = {
   module Raw: {
     type t
@@ -13,5 +14,3 @@ module type GraphQLOperation = {
 }
 
 type requestHandler
-type responseTransformer = MSW__Raw__Response.t => MSW__Raw__Response.t
-type responseBuilder = array<responseTransformer>

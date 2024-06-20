@@ -1,8 +1,8 @@
+module Delay = MSW__Delay
 module Server = MSW__Server
 module ServiceWorker = MSW__ServiceWorker
 module GraphQL = MSW__GraphQL
-module GraphQL_PPX = MSW__GraphQL_PPX
-module REST = MSW__REST
+module Http = MSW__Http
 
 /**
  * https://mswjs.io/docs/api/setup-worker
@@ -30,3 +30,9 @@ external setupServer: unit => Server.t = "setupServer"
 @module("msw/node")
 @variadic
 external setupServerWithHandlers: array<MSW__Common.requestHandler> => Server.t = "setupServer"
+
+/**
+https://mswjs.io/docs/api/passthrough
+*/
+@module("msw")
+external passthrough: unit => MSW__HttpResponse.t = "passthrough"
