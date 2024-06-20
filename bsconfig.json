@@ -1,7 +1,8 @@
 {
+  "name": "@illusionalsagacity/rescript-msw",
+  "uncurried": false,
   "package-specs": ["commonjs"],
   "suffix": ".cjs",
-  "name": "@illusionalsagacity/rescript-msw",
   "sources": [
     {
       "dir": "src",
@@ -9,6 +10,11 @@
     },
     {
       "dir": "__tests__",
+      "subdirs": false,
+      "type": "dev"
+    },
+    {
+      "dir": "testUtils",
       "subdirs": false,
       "type": "dev"
     }

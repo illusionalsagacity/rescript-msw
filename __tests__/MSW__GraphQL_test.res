@@ -31,29 +31,19 @@ describe("rescript-msw", () => {
     let uri = _ => "http://localhost:4000"
     make(~cache, ~uri, ())
   }
-  let server = MSW.setupServer()
-
-  beforeAll(() => {
-    MSW.Server.listenWithOptions(server, {onUnhandledRequest: #error})
-  })
 
   afterEachPromise(() => {
-    MSW.Server.resetHandlers(server)
     client.clearStore()
   })
 
-  afterAll(() => {
-    MSW.Server.close(server)
-  })
-
-  testPromise("should return data for response", () => {
-    server->MSW.Server.use({
+  testPromise("should return data for response", async () => {
+    MSWServerInstance.server->MSW.Server.use({
       open MSW.GraphQL
 
       query(
         #Name("UserQueryWithFragment"),
         (. {variables: {QueryB.UserQueryWithFragment.id: id}, _}, res, ctx) => {
-          res->Response.res([
+          res->Response.once([
             Context.statusWithText(ctx, 200, "OK"),
             Context.data(
               ctx,
@@ -71,45 +61,58 @@ describe("rescript-msw", () => {
       )
     })
 
-    client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})->Promise.thenResolve(
-      result => {
-        result
-        ->expect
-        ->toEqual(
-          Ok({
-            networkStatus: Ready,
-            error: None,
-            loading: false,
-            data: {
-              userById: Some({
-                __typename: "User",
-                id: "test_id",
-                avatarUrl: Some("http://test.com/avatar.png"),
-                fullName: "John Doe",
-              }),
-            },
+    let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
+
+    result
+    ->expect
+    ->toEqual(
+      Ok({
+        networkStatus: Ready,
+        error: None,
+        loading: false,
+        data: {
+          userById: Some({
+            __typename: "User",
+            id: "test_id",
+            avatarUrl: Some("http://test.com/avatar.png"),
+            fullName: "John Doe",
           }),
-        )
-      },
+        },
+      }),
     )
   })
 
-  testPromise("should return error for networkError", () => {
-    server->MSW.Server.use(
+  testPromise("should return error for networkError", async () => {
+    MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operation(
-        (. _req, res, _ctx) => res->MSW__Raw__Response.networkError("Not found"),
+        (. _req, res, _ctx) =>
+          res->MSW__Raw__Response.once([
+            _ctx->MSW__GraphQL__Context.statusWithText(503, "Not found"),
+          ]),
       ),
     )
 
-    client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})->Promise.then(
-      result => {
-        Promise.resolve(
-          switch result {
-          | Error({networkError: Some(_), _}) => expect(true)->toBe(true)
-          | Error(_) | Ok(_) => false->expect->toBe(true)
-          },
-        )
-      },
-    )
+    let result = switch await client.query(
+      ~query=module(QueryB.UserQueryWithFragment),
+      ~errorPolicy=All,
+      {id: "test_id"},
+    ) {
+    | Ok(_) => None
+    | Error(e) => Some(e)
+    }
+
+    let networkError =
+      result
+      ->Belt.Option.getExn
+      ->(v => v.ApolloClient.Types.ApolloError.networkError)
+      ->Belt.Option.getExn
+
+    switch networkError {
+    | ApolloClient.Types.ApolloError.FetchFailure(_) => pass
+    | BadBody(_)
+    | BadStatus(_, _)
+    | ParseError(_) =>
+      fail("expected FetchFailure")
+    }
   })
 })
