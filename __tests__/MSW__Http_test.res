@@ -1,5 +1,5 @@
-open Jest
-open Expect
+open! RescriptCore
+open Vitest
 
 type response<'a> = {..} as 'a
 
@@ -34,28 +34,22 @@ module Encode = {
 
 let url = "http://localhost:8080"
 
-describe("MSW__REST", () => {
-  open MSW.REST.Raw
+describe("MSW__Http", () => {
+  open MSW
 
   describe("get", () => {
     testPromise(
       "should return data for a response",
-      async () => {
+      async (_suite) => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          get(
+        MSWServerInstance.server->Server.use(
+          Http.get(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
@@ -63,11 +57,10 @@ describe("MSW__REST", () => {
         let result = await Fetch.fetch(url, {method: #GET})
         let json = await Fetch.Response.json(result)
 
-        json
-        ->JsonCombinators.Json.decode(Decode.stockPrice)
-        ->Belt.Result.getExn
+        JsonCombinators.Json.decode(json, Decode.stockPrice)
+        ->Result.getExn
         ->expect
-        ->toEqual(value)
+        ->Expect.toEqual(value)
       },
     )
   })
@@ -75,34 +68,27 @@ describe("MSW__REST", () => {
   describe("post", () => {
     testPromise(
       "should return data for a response",
-      async () => {
+      async (_suite) => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          post(
+        MSWServerInstance.server->Server.use(
+          Http.post(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
 
         let response = await Fetch.fetch(url, {method: #POST})
         let json = await Fetch.Response.json(response)
-
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
-        ->Belt.Result.getExn
+        ->Result.getExn
         ->expect
-        ->toEqual(value)
+        ->Expect.toEqual(value)
       },
     )
   })
@@ -110,22 +96,16 @@ describe("MSW__REST", () => {
   describe("put", () => {
     testPromise(
       "should return data for a response",
-      async () => {
+      async (_suite) => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          put(
+        MSWServerInstance.server->Server.use(
+          Http.put(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
@@ -134,79 +114,75 @@ describe("MSW__REST", () => {
         let json = await Fetch.Response.json(response)
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
-        ->Belt.Result.getExn
+        ->Result.getExn
         ->expect
-        ->toEqual(value)
+        ->Expect.toEqual(value)
       },
     )
   })
+
   describe("patch", () => {
     testPromise(
       "should return data for a response",
-      async () => {
+      async (_suite) => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
 
-        MSWServerInstance.server->MSW.Server.use(
-          patch(
+        MSWServerInstance.server->Server.use(
+          Http.patch(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(
-                res,
-                [
-                  ctx->Context.statusWithText(200, "OK"),
-                  ctx->Context.json(Encode.stockPrice(value)),
-                ],
-              )
+            async _options => {
+              Encode.stockPrice(value)->Http.Response.json({status: 200, statusText: "OK"})
             },
           ),
         )
 
         let response = await Fetch.fetch(url, {method: #PATCH})
         let json = await Fetch.Response.json(response)
-
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
-        ->Belt.Result.getExn
+        ->Result.getExn
         ->expect
-        ->toEqual(value)
+        ->Expect.toEqual(value)
       },
     )
   })
+
   describe("delete", () => {
     testPromise(
       "should return data for a response",
-      async () => {
-        MSWServerInstance.server->MSW.Server.use(
-          delete(
+      async (_suite) => {
+        MSWServerInstance.server->Server.use(
+          Http.delete(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(res, [ctx->Context.statusWithText(204, "No Content")])
+            async _options => {
+              Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
             },
           ),
         )
 
         let response = await Fetch.fetch(url, {method: #DELETE})
-        response->Fetch.Response.statusText->expect->toEqual("No Content")
+        response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
       },
     )
   })
+
   describe("options", () => {
     testPromise(
       "should return data for a response",
-      async () => {
-        MSWServerInstance.server->MSW.Server.use(
-          options(
+      async (_suite) => {
+        MSWServerInstance.server->Server.use(
+          Http.options(
             #URL(url),
-            (. _req, res, ctx) => {
-              Response.res(res, [ctx->Context.statusWithText(204, "No Content")])
+            async _options => {
+              Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
             },
           ),
         )
 
         let response = await Fetch.fetch(url, {method: #OPTIONS})
-        response->Fetch.Response.statusText->expect->toEqual("No Content")
+        response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
       },
     )
   })
@@ -214,15 +190,8 @@ describe("MSW__REST", () => {
   describe("response", () => {
     testPromise(
       "should return error for networkError",
-      async () => {
-        MSWServerInstance.server->MSW.Server.use(
-          get(
-            #URL(url),
-            (. _req, res, _ctx) => {
-              Response.networkError(res, "Oops")
-            },
-          ),
-        )
+      async (_suite) => {
+        MSWServerInstance.server->Server.use(Http.get(#URL(url), async _options => Http.Response.error()))
 
         let result = try {
           let _ = await Fetch.get(url)
@@ -231,10 +200,10 @@ describe("MSW__REST", () => {
         | Js.Exn.Error(e) => Some(e)
         }
 
-        let error = Belt.Option.getExn(result)
-        let name = Js.Exn.name(error)->Belt.Option.getExn
-        let message = Js.Exn.message(error)->Belt.Option.getExn
-        expect((name, message))->toEqual(("TypeError", "Failed to fetch"))
+        let error = Option.getExn(result)
+        let name = Js.Exn.name(error)->Option.getExn
+        let message = Js.Exn.message(error)->Option.getExn
+        expect((name, message))->Expect.toEqual(("TypeError", "Failed to fetch"))
       },
     )
   })

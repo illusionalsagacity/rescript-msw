@@ -1,4 +1,7 @@
-module type GraphQLOperation = {
+/**
+This module type matches the shape of the generated operation module from `@reasonml-community/graphql-ppx` so we can generate a handler for it using the generated code.
+ */
+module type GraphQLPPXOperation = {
   module Raw: {
     type t
     type t_variables
@@ -6,12 +9,14 @@ module type GraphQLOperation = {
   type t
   type t_variables
 
-  let query: ApolloClient.GraphQL_PPX.templateTagReturnType
+  // this library does not actually need the query type, so we can eliminate any dependency on rescript-apollo-client by not including the property
+  // let query: 'query
   let parse: Raw.t => t
   let serialize: t => Raw.t
   let serializeVariables: t_variables => Raw.t_variables
 }
 
+/**
+ The MSW request handler
+ */
 type requestHandler
-type responseTransformer = MSW__Raw__Response.t => MSW__Raw__Response.t
-type responseBuilder = array<responseTransformer>
