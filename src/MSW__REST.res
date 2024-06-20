@@ -18,30 +18,31 @@ type handler<'requestBody, 'responseBody> = (
 
 type callFunc = Response | Once | NetworkError(string)
 
-let handle = (handler, . req, _res, ctx) => {
-  let func = ref(Response)
-  let wrappedContext = MSW__Context.WrappedREST.wrap(ctx)
-  let wrappedRes = {
-    res: () => {
-      func := Response
-      []
-    },
-    once: () => {
-      func := Once
-      []
-    },
-    networkError: message => {
-      func := NetworkError(message)
-      []
-    },
+let handle = handler =>
+  (. req, _res, ctx) => {
+    let func = ref(Response)
+    let wrappedContext = MSW__Context.WrappedREST.wrap(ctx)
+    let wrappedRes = {
+      res: () => {
+        func := Response
+        []
+      },
+      once: () => {
+        func := Once
+        []
+      },
+      networkError: message => {
+        func := NetworkError(message)
+        []
+      },
+    }
+    let transformers = handler(req, wrappedRes, wrappedContext)
+    switch func.contents {
+    | Response => MSW__ResponseResolver.response(transformers)
+    | Once => MSW__ResponseResolver.once(transformers)
+    | NetworkError(message) => MSW__ResponseResolver.networkError(message)
+    }
   }
-  let transformers = handler(req, wrappedRes, wrappedContext)
-  switch func.contents {
-  | Response => MSW__ResponseResolver.response(transformers)
-  | Once => MSW__ResponseResolver.once(transformers)
-  | NetworkError(message) => MSW__ResponseResolver.networkError(message)
-  }
-}
 
 let all = (name, fn) => Raw.all(name, handle(fn))
 

@@ -6,47 +6,56 @@ type t<'body>
 
 /**
  * https://mswjs.io/docs/api/context/status
- */ @send
+ */
+@send
 external status: (t<'body>, int) => responseTransformer = "status"
 
 /**
  * https://mswjs.io/docs/api/context/status
- */ @send
+ */
+@send
 external statusWithText: (t<'body>, int, string) => responseTransformer = "status"
 
 /**
  * https://mswjs.io/docs/api/context/set
- */ @send
+ */
+@send
 external set: (t<'body>, string, string) => responseTransformer = "set"
 
 /**
  * https://mswjs.io/docs/api/context/set
- */ @send
+ */
+@send
 external setMany: (t<'body>, Js.Dict.t<array<string>>) => responseTransformer = "set"
 
 /**
  * https://mswjs.io/docs/api/context/text
- */ @send
+ */
+@send
 external text: (t<string>, string) => responseTransformer = "text"
 
 /**
  * https://mswjs.io/docs/api/context/json
- */ @send
+ */
+@send
 external json: (t<Js.Json.t>, Js.Json.t) => responseTransformer = "json"
 
 /**
  * https://mswjs.io/docs/api/context/xml
- */ @send
+ */
+@send
 external xml: (t<string>, string) => responseTransformer = "xml"
 
 /**
  * https://mswjs.io/docs/api/context/delay
- */ @send
+ */
+@send
 external delay: (t<'body>, int) => responseTransformer = "delay"
 
 /**
  * https://mswjs.io/docs/api/context/fetch
- */ @send
+ */
+@send
 external fetch: (t<'body>, MSW__REST__Request.t<'requestBody>) => Js.Promise.t<'response> = "fetch"
 
 // TODO

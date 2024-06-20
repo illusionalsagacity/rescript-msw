@@ -1,8 +1,6 @@
 type t
 
-type serviceWorkerRegistrationOptions = {
-  scope: string,
-}
+type serviceWorkerRegistrationOptions = {scope: string}
 
 type serviceWorkerOptions = {
   url?: string,
@@ -17,7 +15,7 @@ type options = {
   quiet?: bool,
   waitUntilReady?: bool,
   findWorker?: (. string, string) => bool,
-  onUnhandledRequest?: [#bypass | #warn | #error]
+  onUnhandledRequest?: [#bypass | #warn | #error],
 }
 
 /**
@@ -47,7 +45,8 @@ external use: (t, MSW__Common.requestHandler) => unit = "use"
 /**
  * https://mswjs.io/docs/api/setup-worker/use
  */
-@send @variadic
+@send
+@variadic
 external useMany: (t, array<MSW__Common.requestHandler>) => unit = "use"
 
 /**
@@ -59,21 +58,25 @@ let useChain = (t, requestHandler) => {
 }
 
 /**
- * https://mswjs.io/docs/api/setup-server/reset-handlers
- */ @send
+ * https://mswjs.io/docs/api/setup-worker/reset-handlers
+ */
+@send
 external resetHandlers: t => unit = "resetHandlers"
 
 /**
- * https://mswjs.io/docs/api/setup-server/reset-handlers
- */ @send
+ * https://mswjs.io/docs/api/setup-worker/reset-handlers
+ */
+@send
 external resetHandlersWithReplace: (t, array<MSW__Common.requestHandler>) => unit = "resetHandlers"
 
 /**
- * https://mswjs.io/docs/api/setup-server/restore-handlers
- */ @send
+ * https://mswjs.io/docs/api/setup-worker/restore-handlers
+ */
+@send
 external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
- * https://mswjs.io/docs/api/setup-server/print-handlers
- */ @send
+ * https://mswjs.io/docs/api/setup-worker/print-handlers
+ */
+@send
 external printHandlers: t => unit = "printHandlers"

@@ -11,7 +11,8 @@ type transformer = t => t
 
 /**
  * https://mswjs.io/docs/api/response#mocked-response
- */ @variadic
+ */
+@variadic
 let res: (
   t,
   array<transformer>,
@@ -19,10 +20,13 @@ let res: (
 
 /**
  * https://mswjs.io/docs/api/response/once
- */ @send @variadic
+ */
+@send
+@variadic
 external once: (t, array<transformer>) => MSW__MockedResponse.t = "once"
 
 /**
  * https://mswjs.io/docs/api/response/network-error
- */ @send
+ */
+@send
 external networkError: (t, string) => MSW__MockedResponse.t = "networkError"

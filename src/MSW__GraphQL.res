@@ -7,7 +7,9 @@ module Response = MSW__Raw__Response
 
 /**
  * https://mswjs.io/docs/api/graphql/query
- */ @module("msw") @scope("graphql")
+ */
+@module("msw")
+@scope("graphql")
 external query: (
   @unwrap [#Name(string) | #RegExp(Js.Re.t)],
   (
@@ -19,7 +21,9 @@ external query: (
 
 /**
  * https://mswjs.io/docs/api/graphql/mutation
- */ @module("msw") @scope("graphql")
+ */
+@module("msw")
+@scope("graphql")
 external mutation: (
   @unwrap [#Name(string) | #RegExp(Js.Re.t)],
   (
@@ -31,7 +35,9 @@ external mutation: (
 
 /**
  * https://mswjs.io/docs/api/graphql/operation
- */ @module("msw") @scope("graphql")
+ */
+@module("msw")
+@scope("graphql")
 external operation: (
   (
     . MSW__GraphQL__Request.t<'requestBody, 'variables>,

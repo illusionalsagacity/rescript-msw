@@ -9,25 +9,33 @@ type listenOptions = {onUnhandledRequest: onUnhandledRequest}
 
 /**
  * https://mswjs.io/docs/api/setup-server/listen
- */ @send external listen: t => unit = "listen"
+ */
+@send
+external listen: t => unit = "listen"
 
 /**
  * https://mswjs.io/docs/api/setup-server/listen
- */ @send
+ */
+@send
 external listenWithOptions: (t, listenOptions) => unit = "listen"
 
 /**
  * https://mswjs.io/docs/api/setup-server/close
- */ @send external close: t => unit = "close"
+ */
+@send
+external close: t => unit = "close"
 
 /**
  * https://mswjs.io/docs/api/setup-server/use
- */ @send
+ */
+@send
 external use: (t, MSW__Common.requestHandler) => unit = "use"
 
 /**
  * https://mswjs.io/docs/api/setup-server/use
- */ @send @variadic
+ */
+@send
+@variadic
 external useMany: (t, array<MSW__Common.requestHandler>) => unit = "use"
 
 /**
@@ -40,20 +48,24 @@ let useChain = (t, requestHandler) => {
 
 /**
  * https://mswjs.io/docs/api/setup-server/reset-handlers
- */ @send
+ */
+@send
 external resetHandlers: t => unit = "resetHandlers"
 
 /**
  * https://mswjs.io/docs/api/setup-server/reset-handlers
- */ @send
+ */
+@send
 external resetHandlersWithReplace: (t, array<MSW__Common.requestHandler>) => unit = "resetHandlers"
 
 /**
  * https://mswjs.io/docs/api/setup-server/restore-handlers
- */ @send
+ */
+@send
 external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
  * https://mswjs.io/docs/api/setup-server/print-handlers
- */ @send
+ */
+@send
 external printHandlers: t => unit = "printHandlers"
