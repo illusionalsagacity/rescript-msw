@@ -1,5 +1,11 @@
 # @illusionalsagacity/rescript-msw
 
+## 0.1.3
+
+### Patch Changes
+
+- Fixes formatting for uncurried projects
+
 ## 0.1.2
 
 ### Patch Changes
