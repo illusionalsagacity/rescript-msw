@@ -1,5 +1,11 @@
 # @illusionalsagacity/rescript-msw
 
+## 0.2.0
+
+### Minor Changes
+
+- ba3e115: BREAKING: support MSW v2
+
 ## 0.1.3
 
 ### Patch Changes
