@@ -1,8 +1,11 @@
 {
   "name": "@illusionalsagacity/rescript-msw",
   "uncurried": false,
-  "package-specs": ["commonjs"],
-  "suffix": ".cjs",
+  "package-specs": [{
+    "module": "esmodule",
+    "in-source": true
+  }],
+  "suffix": ".res.js",
   "sources": [
     {
       "dir": "src",
@@ -20,14 +23,15 @@
     }
   ],
   "bsc-flags": [],
-  "bs-dependencies": ["rescript-apollo-client", "@glennsl/rescript-fetch"],
+  "bs-dependencies": ["@glennsl/rescript-fetch"],
   "ppx-flags": ["@reasonml-community/graphql-ppx/ppx"],
   "bs-dev-dependencies": [
+    "@rescript/core",
     "@rescript/react",
     "@reasonml-community/graphql-ppx",
-    "@glennsl/rescript-jest",
-    "@glennsl/rescript-json-combinators",
-    "@ryyppy/rescript-promise"
+    "rescript-apollo-client",
+    "rescript-vitest",
+    "@glennsl/rescript-json-combinators"
   ],
   "warnings": {
     "number": "+A-42-48",

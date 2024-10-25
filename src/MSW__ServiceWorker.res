@@ -77,6 +77,13 @@ external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
  * https://mswjs.io/docs/api/setup-worker/print-handlers
+ * an alias of "printHandlers" for easier migration
  */
 @send
-external printHandlers: t => unit = "printHandlers"
+external listHandlers: t => unit = "printHandlers"
+
+/**
+ https://mswjs.io/docs/api/life-cycle-events
+ */
+@get
+external events: (t) => MSW__Events.t = "events"

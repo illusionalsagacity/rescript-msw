@@ -141,3 +141,4 @@ lib
 __tests__
 graphql_schema.json
 jest.config.cjs
+*.res.js
