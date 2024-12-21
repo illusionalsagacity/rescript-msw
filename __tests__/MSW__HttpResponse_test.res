@@ -1,7 +1,9 @@
 open! RescriptCore
 open Vitest
+open! Vitest.Bindings.BuiltIn
+open Fetch
 
-external asResponse: MSW.HttpResponse.t => Fetch.Response.t = "%identity"
+external asResponse: MSW.HttpResponse.t => Response.t = "%identity"
 
 Concurrent.describe("HttpResponse", () => {
   test("Creates a Response", _suite => {
@@ -14,29 +16,29 @@ Concurrent.describe("HttpResponse", () => {
     let response = MSW.HttpResponse.make(#Undefined(Js.undefined), {status, statusText: "OK"})
     let response = asResponse(response)
 
-    Fetch.Response.status(response)->expect->Expect.toEqual(status)
+    Response.status(response)->expect->Expect.toEqual(status)
   })
 
   Each.test(["OK", "Hello, World!"], "Creates a Response with statusText %s", statusText => {
     let response = MSW.HttpResponse.make(#String("Hello, world!"), {status: 200, statusText})
     let response = asResponse(response)
 
-    Fetch.Response.statusText(response)->expect->Expect.toEqual(statusText)
+    Response.statusText(response)->expect->Expect.toEqual(statusText)
   })
 
   test("HttpResponse.error creates a Response", _suite => {
     let response = MSW.HttpResponse.error()
     let response = asResponse(response)
 
-    Fetch.Response.ok(response)->expect->Expect.toBe(false)
+    Response.ok(response)->expect->Expect.toBe(false)
   })
 
   test("HttpResponse.json creates a Response", _suite => {
     let response = MSW.HttpResponse.json(Js.Json.boolean(true), {status: 200, statusText: "OK"})
     let response = asResponse(response)
 
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Type")
+    Response.headers(response)
+    ->Headers.get("Content-Type")
     ->expect
     ->Expect.toBeSome(~some=Some("application/json"))
   })
@@ -45,8 +47,8 @@ Concurrent.describe("HttpResponse", () => {
     let response = MSW.HttpResponse.jsonObj({"hello": "world"}, {status: 200, statusText: "OK"})
     let response = asResponse(response)
 
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Type")
+    Response.headers(response)
+    ->Headers.get("Content-Type")
     ->expect
     ->Expect.toBeSome(~some=Some("application/json"))
   })
@@ -55,8 +57,8 @@ Concurrent.describe("HttpResponse", () => {
     let response = MSW.HttpResponse.text("Hello, World!", {status: 200, statusText: "OK"})
     let response = asResponse(response)
 
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Type")
+    Response.headers(response)
+    ->Headers.get("Content-Type")
     ->expect
     ->Expect.toBeSome(~some=Some("text/plain"))
   })
@@ -69,8 +71,8 @@ Concurrent.describe("HttpResponse", () => {
 
     let response = asResponse(response)
 
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Type")
+    Response.headers(response)
+    ->Headers.get("Content-Type")
     ->expect
     ->Expect.toBeSome(~some=Some("text/xml"))
   })
@@ -82,8 +84,8 @@ Concurrent.describe("HttpResponse", () => {
     )
     let response = asResponse(response)
 
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Type")
+    Response.headers(response)
+    ->Headers.get("Content-Type")
     ->expect
     ->Expect.toBeSome(~some=Some("text/html"))
   })
@@ -96,18 +98,18 @@ Concurrent.describe("HttpResponse", () => {
     let response = asResponse(response)
 
     Console.log(response)
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Length")
+    Response.headers(response)
+    ->Headers.get("Content-Length")
     ->expect
     ->Expect.toBeSome(~some=Some("10"))
   })
 
   test("HttpResponse.formData creates a Response", _suite => {
-    let response = MSW.HttpResponse.formData(Fetch.FormData.make(), {status: 200, statusText: "OK"})
+    let response = MSW.HttpResponse.formData(FormData.make(), {status: 200, statusText: "OK"})
     let response = asResponse(response)
 
-    Fetch.Response.headers(response)
-    ->Fetch.Headers.get("Content-Type")
+    Response.headers(response)
+    ->Headers.get("Content-Type")
     ->Option.getExn
     ->expect
     ->Expect.String.toContain("multipart/form-data")

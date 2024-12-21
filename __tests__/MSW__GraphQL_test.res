@@ -1,5 +1,6 @@
 open! RescriptCore
 open Vitest
+open! Vitest.Bindings.BuiltIn
 
 module UserQuery = %graphql(`
   query UserQuery($id: ID!) {
@@ -32,13 +33,13 @@ describe("MSW__GraphQL", () => {
     make(~cache, ~uri, ())
   }
 
-  afterEachPromise(() => {
-    client.clearStore()
+  afterEachAsync(async () => {
+    let _ = await client.clearStore()
   })
 
   module UserQueryWithFragmentHandler = MSW__GraphQL__Response.Make(QueryB.UserQueryWithFragment)
 
-  testPromise("should return data for response", async _suite => {
+  testAsync("should return data for response", async _suite => {
     MSWServerInstance.server->MSW.Server.use({
       open MSW.GraphQL
 
@@ -84,7 +85,7 @@ describe("MSW__GraphQL", () => {
     )
   })
 
-  testPromise("should return data for non-ppx response", async _suite => {
+  testAsync("should return data for non-ppx response", async _suite => {
     MSWServerInstance.server->MSW.Server.use({
       MSW.GraphQL.query(
         #Name("UserQueryWithFragment"),
@@ -136,7 +137,7 @@ describe("MSW__GraphQL", () => {
     )
   })
 
-  testPromise("should return error for a 503", async _suite => {
+  testAsync("should return error for a 503", async _suite => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operationWithOptions(
         async _ => {
@@ -170,7 +171,7 @@ describe("MSW__GraphQL", () => {
     }
   })
 
-  testPromise("should return error for a networkError", async _suite => {
+  testAsync("should return error for a networkError", async _suite => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operationWithOptions(async _ => MSW.Http.Response.error(), {once: true}),
     )

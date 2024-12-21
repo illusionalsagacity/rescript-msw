@@ -2,6 +2,7 @@ open! RescriptCore
 open Vitest
 open! Concurrent
 open MSW
+open! Vitest.Bindings.BuiltIn
 
 let url = "http://localhost:8080"
 let fetch = () => Fetch.fetch(url, {method: #GET})

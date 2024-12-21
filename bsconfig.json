@@ -1,6 +1,10 @@
 {
   "name": "@illusionalsagacity/rescript-msw",
-  "uncurried": false,
+  "uncurried": true,
+  "jsx": {
+    "version": 4,
+    "mode": "automatic"
+  },
   "package-specs": [{
     "module": "esmodule",
     "in-source": true
@@ -39,6 +43,7 @@
   },
   "graphql": {
     "schema": "graphql_schema.json",
+    "uncurried": true,
     "apolloMode": true,
     "extendMutation": "ApolloClient.GraphQL_PPX.ExtendMutation",
     "extendQuery": "ApolloClient.GraphQL_PPX.ExtendQuery",

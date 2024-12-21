@@ -1,5 +1,6 @@
 open! RescriptCore
 open Vitest
+open! Vitest.Bindings.BuiltIn
 open MSW
 
 let url = "http://localhost:8080"
@@ -13,7 +14,7 @@ describe("Delay", () => {
     let _ = Vi.useRealTimers()
   })
 
-  testPromise("should handle a realistic delayed response", async _suite => {
+  testAsync("should handle a realistic delayed response", async _suite => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -31,7 +32,7 @@ describe("Delay", () => {
     response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
   })
 
-  testPromise("should handle an explicit delayed response", async _suite => {
+  testAsync("should handle an explicit delayed response", async _suite => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -49,7 +50,7 @@ describe("Delay", () => {
     response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
   })
 
-  testPromise("should handle an infinitely delayed response", async _suite => {
+  testAsync("should handle an infinitely delayed response", async _suite => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -76,7 +77,7 @@ describe("Delay", () => {
     response->expect->Expect.toEqual(#timedOut)
   })
 
-  testPromise("should handle an aborted response", async _suite => {
+  testAsync("should handle an aborted response", async _suite => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),

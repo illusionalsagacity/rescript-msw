@@ -1,5 +1,6 @@
 open! RescriptCore
 open Vitest
+open! Vitest.Bindings.BuiltIn
 
 type response<'a> = {..} as 'a
 
@@ -14,12 +15,12 @@ module Decode = {
   open JsonCombinators.Json.Decode
 
   let point = object(field => {
-    openingPrice: field.required(. "openingPrice", int),
-    closingPrice: field.required(. "closingPrice", int),
+    openingPrice: field.required("openingPrice", int),
+    closingPrice: field.required("closingPrice", int),
   })
 
   let stockPrice = object(field => {
-    history: field.required(. "history", array(point)),
+    history: field.required("history", array(point)),
   })
 }
 
@@ -29,7 +30,9 @@ module Encode = {
   let tick = value =>
     object([("openingPrice", int(value.openingPrice)), ("closingPrice", int(value.closingPrice))])
 
-  let stockPrice = value => object([("history", array(tick, value.history))])
+  let arrayOfTicks = array(tick)
+
+  let stockPrice = value => object([("history", arrayOfTicks(value.history))])
 }
 
 let url = "http://localhost:8080"
@@ -38,9 +41,9 @@ describe("MSW__Http", () => {
   open MSW
 
   describe("get", () => {
-    testPromise(
+    testAsync(
       "should return data for a response",
-      async (_suite) => {
+      async _suite => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -66,9 +69,9 @@ describe("MSW__Http", () => {
   })
 
   describe("post", () => {
-    testPromise(
+    testAsync(
       "should return data for a response",
-      async (_suite) => {
+      async _suite => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -94,9 +97,9 @@ describe("MSW__Http", () => {
   })
 
   describe("put", () => {
-    testPromise(
+    testAsync(
       "should return data for a response",
-      async (_suite) => {
+      async _suite => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -122,9 +125,9 @@ describe("MSW__Http", () => {
   })
 
   describe("patch", () => {
-    testPromise(
+    testAsync(
       "should return data for a response",
-      async (_suite) => {
+      async _suite => {
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -150,9 +153,9 @@ describe("MSW__Http", () => {
   })
 
   describe("delete", () => {
-    testPromise(
+    testAsync(
       "should return data for a response",
-      async (_suite) => {
+      async _suite => {
         MSWServerInstance.server->Server.use(
           Http.delete(
             #URL(url),
@@ -169,9 +172,9 @@ describe("MSW__Http", () => {
   })
 
   describe("options", () => {
-    testPromise(
+    testAsync(
       "should return data for a response",
-      async (_suite) => {
+      async _suite => {
         MSWServerInstance.server->Server.use(
           Http.options(
             #URL(url),
@@ -188,10 +191,12 @@ describe("MSW__Http", () => {
   })
 
   describe("response", () => {
-    testPromise(
+    testAsync(
       "should return error for networkError",
-      async (_suite) => {
-        MSWServerInstance.server->Server.use(Http.get(#URL(url), async _options => Http.Response.error()))
+      async _suite => {
+        MSWServerInstance.server->Server.use(
+          Http.get(#URL(url), async _options => Http.Response.error()),
+        )
 
         let result = try {
           let _ = await Fetch.get(url)
