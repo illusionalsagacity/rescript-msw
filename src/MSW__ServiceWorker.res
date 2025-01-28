@@ -14,7 +14,7 @@ type options = {
   serviceWorker?: serviceWorkerOptions,
   quiet?: bool,
   waitUntilReady?: bool,
-  findWorker?: (. string, string) => bool,
+  findWorker?: (string, string) => bool,
   onUnhandledRequest?: [#bypass | #warn | #error],
 }
 
@@ -86,4 +86,4 @@ external listHandlers: t => unit = "printHandlers"
  https://mswjs.io/docs/api/life-cycle-events
  */
 @get
-external events: (t) => MSW__Events.t = "events"
+external events: t => MSW__Events.t = "events"

@@ -218,4 +218,4 @@ external listHandlers: t => unit = "printHandlers"
  https://mswjs.io/docs/api/life-cycle-events
  */
 @get
-external events: (t) => MSW__Events.t = "events"
+external events: t => MSW__Events.t = "events"

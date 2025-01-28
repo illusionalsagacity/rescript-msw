@@ -73,7 +73,7 @@ module Make: (Operation: MSW__Common.GraphQLPPXOperation) =>
   type responseData = Operation.t
   type rawResponseData = Operation.Raw.t
 
-  let serialize = (~data, ~errors=?, ~extensions=?, ()) => {
+  let serialize = (~data, ~errors=?, ~extensions=?) => {
     let body = Js.Dict.fromArray([("data", Operation.serialize(data)->unsafeAsJson)])
 
     switch errors {
@@ -90,7 +90,7 @@ module Make: (Operation: MSW__Common.GraphQLPPXOperation) =>
   }
 
   let graphql = (~data, ~errors=?, ~extensions=?, httpResponseInit) => {
-    MSW__HttpResponse.json(serialize(~data, ~errors?, ~extensions?, ()), httpResponseInit)
+    serialize(~data, ~errors?, ~extensions?)->MSW__HttpResponse.json(httpResponseInit)
   }
 }
 
@@ -107,5 +107,5 @@ let graphql = (~data, ~errors=?, ~extensions=?, httpResponseInit) => {
   | None => ()
   }
 
-  MSW__HttpResponse.json(Js.Json.object_(body), httpResponseInit)
+  Js.Json.object_(body)->MSW__HttpResponse.json(httpResponseInit)
 }
