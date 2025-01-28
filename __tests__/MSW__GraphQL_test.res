@@ -1,6 +1,5 @@
 open! RescriptCore
 open Vitest
-open! Vitest.Bindings.BuiltIn
 
 module UserQuery = %graphql(`
   query UserQuery($id: ID!) {
@@ -39,7 +38,7 @@ describe("MSW__GraphQL", () => {
 
   module UserQueryWithFragmentHandler = MSW__GraphQL__Response.Make(QueryB.UserQueryWithFragment)
 
-  testAsync("should return data for response", async _suite => {
+  testAsync("should return data for response", async t => {
     MSWServerInstance.server->MSW.Server.use({
       open MSW.GraphQL
 
@@ -66,8 +65,8 @@ describe("MSW__GraphQL", () => {
 
     let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
 
-    result
-    ->expect
+    t
+    ->expect(result)
     ->Expect.toEqual(
       Ok({
         networkStatus: Ready,
@@ -85,7 +84,7 @@ describe("MSW__GraphQL", () => {
     )
   })
 
-  testAsync("should return data for non-ppx response", async _suite => {
+  testAsync("should return data for non-ppx response", async t => {
     MSWServerInstance.server->MSW.Server.use({
       MSW.GraphQL.query(
         #Name("UserQueryWithFragment"),
@@ -118,8 +117,8 @@ describe("MSW__GraphQL", () => {
 
     let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
 
-    result
-    ->expect
+    t
+    ->expect(result)
     ->Expect.toEqual(
       Ok({
         networkStatus: Ready,
@@ -137,7 +136,7 @@ describe("MSW__GraphQL", () => {
     )
   })
 
-  testAsync("should return error for a 503", async _suite => {
+  testAsync("should return error for a 503", async _t => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operation(
         async _ => {
@@ -163,15 +162,15 @@ describe("MSW__GraphQL", () => {
       ->Option.getExn
 
     switch networkError {
-    | ApolloClient.Types.ApolloError.FetchFailure(_) => expect(true)->Expect.toBeTruthy
+    | ApolloClient.Types.ApolloError.FetchFailure(_) => Assert.assert_(true)
     | BadBody(_)
     | BadStatus(_, _)
     | ParseError(_) =>
-      expect(false)->Expect.toBeTruthy
+      Assert.unreachable(~message="Expected FetchFailure", ())
     }
   })
 
-  testAsync("should return error for a networkError", async _suite => {
+  testAsync("should return error for a networkError", async _t => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operation(async _ => MSW.Http.Response.error(), ~options={once: true}),
     )
@@ -192,11 +191,11 @@ describe("MSW__GraphQL", () => {
       ->Option.getExn
 
     switch networkError {
-    | ApolloClient.Types.ApolloError.FetchFailure(_) => expect(true)->Expect.toBeTruthy
+    | ApolloClient.Types.ApolloError.FetchFailure(_) => Assert.assert_(true)
     | BadBody(_)
     | BadStatus(_, _)
     | ParseError(_) =>
-      expect(false)->Expect.toBeTruthy
+      Assert.unreachable(~message="Expected FetchFailure", ())
     }
   })
 })

@@ -2,7 +2,6 @@ open! RescriptCore
 open Vitest
 open! Concurrent
 open MSW
-open! Vitest.Bindings.BuiltIn
 
 let url = "http://localhost:8080"
 let fetch = () => Fetch.fetch(url, {method: #GET})
@@ -32,12 +31,12 @@ describe(
       (status, statusText) => {
         itAsync(
           "gets an OK response",
-          async _suite => {
+          async t => {
             MSWServerInstance.server->Server.use(makeFixture(status, statusText))
 
             let response = await fetch()
-            Fetch.Response.statusText(response)->expect->Expect.toEqual(statusText)
-            Fetch.Response.status(response)->expect->Expect.toEqual(status)
+            t->expect(Fetch.Response.statusText(response))->Expect.toEqual(statusText)
+            t->expect(Fetch.Response.status(response))->Expect.toEqual(status)
           },
         )
       },
