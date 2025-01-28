@@ -17,6 +17,7 @@
   "scripts": {
     "build": "rescript build -with-deps",
     "clean": "rescript clean",
+    "format": "rescript format -all",
     "start": "rescript build -w",
     "test": "vitest --silent"
   },
