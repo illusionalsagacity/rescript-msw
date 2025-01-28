@@ -139,11 +139,11 @@ describe("MSW__GraphQL", () => {
 
   testAsync("should return error for a 503", async _suite => {
     MSWServerInstance.server->MSW.Server.use(
-      MSW.GraphQL.operationWithOptions(
+      MSW.GraphQL.operation(
         async _ => {
           MSW.Http.Response.make(#Null(Js.null), {status: 503, statusText: "Service Unavailable"})
         },
-        {once: true},
+        ~options={once: true},
       ),
     )
 
@@ -173,7 +173,7 @@ describe("MSW__GraphQL", () => {
 
   testAsync("should return error for a networkError", async _suite => {
     MSWServerInstance.server->MSW.Server.use(
-      MSW.GraphQL.operationWithOptions(async _ => MSW.Http.Response.error(), {once: true}),
+      MSW.GraphQL.operation(async _ => MSW.Http.Response.error(), ~options={once: true}),
     )
 
     let result = switch await client.query(

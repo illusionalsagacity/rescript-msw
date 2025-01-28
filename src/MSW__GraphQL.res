@@ -22,6 +22,7 @@ type resolverOptions<'variables> = {
 external query: (
   @unwrap [#Name(string) | #RegExp(Js.Re.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "query"
 
 /**
@@ -29,6 +30,7 @@ external query: (
  */
 @module("msw")
 @scope("graphql")
+@deprecated("Use query instead")
 external queryWithOptions: (
   @unwrap [#Name(string) | #RegExp(Js.Re.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
@@ -43,6 +45,7 @@ external queryWithOptions: (
 external mutation: (
   @unwrap [#Name(string) | #RegExp(Js.Re.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "mutation"
 
 /**
@@ -50,6 +53,7 @@ external mutation: (
  */
 @module("msw")
 @scope("graphql")
+@deprecated("Use mutation instead")
 external mutationWithOptions: (
   @unwrap [#Name(string) | #RegExp(Js.Re.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
@@ -62,7 +66,8 @@ external mutationWithOptions: (
 @module("msw")
 @scope("graphql")
 external operation: (
-  resolverOptions<'variables> => MSW__HttpResponse.t
+  resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "operation"
 
 /**
@@ -70,6 +75,7 @@ external operation: (
  */
 @module("msw")
 @scope("graphql")
+@deprecated("Use operation instead")
 external operationWithOptions: (
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
@@ -92,6 +98,7 @@ module Link = {
     graphqlScope,
     @unwrap [#Name(string) | #RegExp(Js.Re.t)],
     resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+    ~options: MSW__HandlerOptions.t=?,
   ) => MSW__Common.requestHandler = "query"
 
   /**
@@ -102,6 +109,7 @@ module Link = {
     graphqlScope,
     @unwrap [#Name(string) | #RegExp(Js.Re.t)],
     resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+    ~options: MSW__HandlerOptions.t=?,
   ) => MSW__Common.requestHandler = "mutation"
 
   /**
@@ -111,5 +119,6 @@ module Link = {
   external operation: (
     graphqlScope,
     resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+    ~options: MSW__HandlerOptions.t=?,
   ) => MSW__Common.requestHandler = "operation"
 }

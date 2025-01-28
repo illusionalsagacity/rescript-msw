@@ -16,13 +16,13 @@ describe("Delay", () => {
 
   testAsync("should handle a realistic delayed response", async _suite => {
     MSWServerInstance.server->Server.use(
-      Http.allWithOptions(
+      Http.all(
         #URL(url),
         async _options => {
           await Delay.realistic()
           Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
         },
-        {once: true},
+        ~options={once: true},
       ),
     )
 
@@ -34,13 +34,13 @@ describe("Delay", () => {
 
   testAsync("should handle an explicit delayed response", async _suite => {
     MSWServerInstance.server->Server.use(
-      Http.allWithOptions(
+      Http.all(
         #URL(url),
         async _options => {
           await Delay.delay(1000)
           Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
         },
-        {once: true},
+        ~options={once: true},
       ),
     )
 
@@ -52,13 +52,13 @@ describe("Delay", () => {
 
   testAsync("should handle an infinitely delayed response", async _suite => {
     MSWServerInstance.server->Server.use(
-      Http.allWithOptions(
+      Http.all(
         #URL(url),
         async _options => {
           await Delay.infinite()
           Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
         },
-        {once: true},
+        ~options={once: true},
       ),
     )
 
@@ -79,13 +79,13 @@ describe("Delay", () => {
 
   testAsync("should handle an aborted response", async _suite => {
     MSWServerInstance.server->Server.use(
-      Http.allWithOptions(
+      Http.all(
         #URL(url),
         async _options => {
           await Delay.infinite()
           Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
         },
-        {once: true},
+        ~options={once: true},
       ),
     )
 

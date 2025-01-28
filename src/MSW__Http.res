@@ -13,9 +13,10 @@ type resolverOptions = {
 external all: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "all"
 
-@module("msw") @scope("http")
+@deprecated @module("msw") @scope("http")
 external allWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -26,9 +27,10 @@ external allWithOptions: (
 external head: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "head"
 
-@module("msw") @scope("http")
+@deprecated @module("msw") @scope("http")
 external headWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -39,9 +41,10 @@ external headWithOptions: (
 external get: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "get"
 
-@module("msw") @scope("http")
+@deprecated @module("msw") @scope("http")
 external getWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -52,9 +55,10 @@ external getWithOptions: (
 external post: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "post"
 
-@module("msw") @scope("http")
+@deprecated("Use post instead") @module("msw") @scope("http")
 external postWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -65,9 +69,10 @@ external postWithOptions: (
 external put: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "put"
 
-@module("msw") @scope("http")
+@deprecated("Use put instead") @module("msw") @scope("http")
 external putWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -78,9 +83,10 @@ external putWithOptions: (
 external patch: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "patch"
 
-@module("msw") @scope("http")
+@deprecated("Use patch instead") @module("msw") @scope("http")
 external patchWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -91,9 +97,10 @@ external patchWithOptions: (
 external delete: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "delete"
 
-@module("msw") @scope("http")
+@deprecated("Use delete instead") @module("msw") @scope("http")
 external deleteWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
@@ -104,9 +111,10 @@ external deleteWithOptions: (
 external options: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
+  ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "options"
 
-@module("msw") @scope("http")
+@deprecated("Use options instead") @module("msw") @scope("http")
 external optionsWithOptions: (
   @unwrap [#URL(string) | #RegExp(Js.Re.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
