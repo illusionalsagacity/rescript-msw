@@ -10,18 +10,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: 'moonrepo/setup-toolchain@v0'
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run format:ci
-      - run: npm run build:ci
-      - run: npm run test:ci
+          auto-install: true
+      - run: yarn install --immutable
+      - run: yarn run format:ci
+      - run: yarn run build:ci
+      - run: yarn run test:ci
