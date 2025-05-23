@@ -8,13 +8,13 @@ module HttpResponse = MSW__HttpResponse
 /**
  * https://mswjs.io/docs/api/setup-worker
  */
-@module("msw")
+@module("msw/browser")
 external setupWorker: unit => MSW__ServiceWorker.t = "setupWorker"
 
 /**
  * https://mswjs.io/docs/api/setup-worker
  */
-@module("msw")
+@module("msw/browser")
 @variadic
 external setupWorkerWithHandlers: array<MSW__Common.requestHandler> => MSW__ServiceWorker.t =
   "setupWorker"
