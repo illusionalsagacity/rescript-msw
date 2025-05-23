@@ -138,3 +138,5 @@ lib
 .graphql_ppx_cache
 .bsb.lock
 *.res.js
+
+test-results/junit.xml

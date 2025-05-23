@@ -1,20 +1,24 @@
 /// <reference types="vitest" />
+import path from "node:path";
 import { defineConfig } from "vitest/config";
-import createReScriptPlugin from '@jihchi/vite-plugin-rescript';
+import createReScriptPlugin from "@jihchi/vite-plugin-rescript";
 
 export default defineConfig({
-  plugins: [
-    createReScriptPlugin({ silent: true }),
-  ],
+  plugins: [createReScriptPlugin({ silent: true })],
   test: {
-    include: ['__tests__/*_test.res.js'],
-    setupFiles: 'testUtils/setupTests.res.js',
+    include: [path.resolve("__tests__", "*_test.res.js")],
+    setupFiles: path.resolve("testUtils", "setupTests.res.js"),
     server: {
       deps: {
         fallbackCJS: true,
       },
     },
-    reporters: process.env.GITHUB_ACTIONS ? ['verbose', 'github-actions'] : ['default'],
+    reporters: process.env.GITHUB_ACTIONS
+      ? ["verbose", "github-actions", "junit"]
+      : ["default"],
+    outputFile: {
+      junit: path.resolve("test-results", "junit.xml"),
+    },
     deps: {
       optimizer: {
         ssr: {
@@ -25,5 +29,5 @@ export default defineConfig({
         },
       },
     },
-  }
+  },
 });

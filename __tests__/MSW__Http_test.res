@@ -43,6 +43,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return data for a response",
       async t => {
+        let expect = expect(t, ...)
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -61,7 +62,7 @@ describe("MSW__Http", () => {
 
         JsonCombinators.Json.decode(json, Decode.stockPrice)
         ->Result.getExn
-        ->(expect(t, _))
+        ->expect
         ->Expect.toEqual(value)
       },
     )
@@ -71,6 +72,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return data for a response",
       async t => {
+        let expect = expect(t, ...)
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -89,7 +91,7 @@ describe("MSW__Http", () => {
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Result.getExn
-        ->(expect(t, _))
+        ->expect
         ->Expect.toEqual(value)
       },
     )
@@ -99,6 +101,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return data for a response",
       async t => {
+        let expect = expect(t, ...)
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -117,7 +120,7 @@ describe("MSW__Http", () => {
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Result.getExn
-        ->(expect(t, _))
+        ->expect
         ->Expect.toEqual(value)
       },
     )
@@ -127,6 +130,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return data for a response",
       async t => {
+        let expect = expect(t, ...)
         let value = {
           history: [{openingPrice: 1, closingPrice: 2}, {openingPrice: 2, closingPrice: 8}],
         }
@@ -145,7 +149,7 @@ describe("MSW__Http", () => {
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Result.getExn
-        ->(expect(t, _))
+        ->expect
         ->Expect.toEqual(value)
       },
     )
@@ -155,6 +159,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return data for a response",
       async t => {
+        let expect = expect(t, ...)
         MSWServerInstance.server->Server.use(
           Http.delete(
             #URL(url),
@@ -165,7 +170,7 @@ describe("MSW__Http", () => {
         )
 
         let response = await Fetch.fetch(url, {method: #DELETE})
-        response->Fetch.Response.statusText->(expect(t, _))->Expect.toEqual("No Content")
+        response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
       },
     )
   })
@@ -174,6 +179,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return data for a response",
       async t => {
+        let expect = expect(t, ...)
         MSWServerInstance.server->Server.use(
           Http.options(
             #URL(url),
@@ -184,7 +190,7 @@ describe("MSW__Http", () => {
         )
 
         let response = await Fetch.fetch(url, {method: #OPTIONS})
-        response->Fetch.Response.statusText->(expect(t, _))->Expect.toEqual("No Content")
+        response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
       },
     )
   })
@@ -193,6 +199,7 @@ describe("MSW__Http", () => {
     testAsync(
       "should return error for networkError",
       async t => {
+        let expect = expect(t, ...)
         MSWServerInstance.server->Server.use(
           Http.get(#URL(url), async _options => Http.Response.error()),
         )
@@ -208,7 +215,7 @@ describe("MSW__Http", () => {
         let error = Option.getExn(result)
         let name = Js.Exn.name(error)->Option.getExn
         let message = Js.Exn.message(error)->Option.getExn
-        expect(t, (name, message))->Expect.toEqual(("TypeError", "Failed to fetch"))
+        (name, message)->expect->Expect.not->Expect.toEqual(("TypeError", "Failed to fetch"))
       },
     )
   })
