@@ -126,7 +126,6 @@ external operationWithOptions: (
 https://mswjs.io/docs/api/graphql#graphqllinkurl
 */
 module Link = {
-
   type graphqlScope
 
   @module("msw") @scope("graphql") external make: string => graphqlScope = "link"

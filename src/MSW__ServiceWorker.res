@@ -6,9 +6,7 @@ https://mswjs.io/docs/api/setup-worker
 type t
 
 /** Options for service worker registration. */
-type serviceWorkerRegistrationOptions = {
-  scope: string,
-}
+type serviceWorkerRegistrationOptions = {scope: string}
 
 /** Options for configuring the service worker used by MSW. */
 type serviceWorkerOptions = {

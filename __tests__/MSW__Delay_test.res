@@ -94,6 +94,9 @@ describe("Delay", () => {
     // this doesn't actually work, because AbortSignal.timeout is not faked
     // see: https://github.com/sinonjs/fake-timers/issues/418
     let _ = await Vi.advanceTimersByTimeAsync(201)
-    await t->expect(response)->Expect.Promise.rejects->Expect.Promise.toThrowError(~message="The operation was aborted due to timeout")
+    await t
+    ->expect(response)
+    ->Expect.Promise.rejects
+    ->Expect.Promise.toThrowError(~message="The operation was aborted due to timeout")
   })
 })

@@ -29,7 +29,7 @@ Concurrent.describe("HttpResponse", () => {
     let response = MSW.HttpResponse.error()
     let response = asResponse(response)
 
-    Response.ok(response)->expect(t, _)->Expect.toBe(false)
+    Response.ok(response)->(expect(t, _))->Expect.toBe(false)
   })
 
   test("HttpResponse.json creates a Response", t => {
@@ -38,7 +38,7 @@ Concurrent.describe("HttpResponse", () => {
 
     Response.headers(response)
     ->Headers.get("Content-Type")
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.toBeSome(~some=Some("application/json"))
   })
 
@@ -48,7 +48,7 @@ Concurrent.describe("HttpResponse", () => {
 
     Response.headers(response)
     ->Headers.get("Content-Type")
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.toBeSome(~some=Some("application/json"))
   })
 
@@ -58,7 +58,7 @@ Concurrent.describe("HttpResponse", () => {
 
     Response.headers(response)
     ->Headers.get("Content-Type")
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.toBeSome(~some=Some("text/plain"))
   })
 
@@ -72,7 +72,7 @@ Concurrent.describe("HttpResponse", () => {
 
     Response.headers(response)
     ->Headers.get("Content-Type")
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.toBeSome(~some=Some("text/xml"))
   })
 
@@ -85,7 +85,7 @@ Concurrent.describe("HttpResponse", () => {
 
     Response.headers(response)
     ->Headers.get("Content-Type")
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.toBeSome(~some=Some("text/html"))
   })
 
@@ -99,7 +99,7 @@ Concurrent.describe("HttpResponse", () => {
     Console.log(response)
     Response.headers(response)
     ->Headers.get("Content-Length")
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.toBeSome(~some=Some("10"))
   })
 
@@ -110,7 +110,7 @@ Concurrent.describe("HttpResponse", () => {
     Response.headers(response)
     ->Headers.get("Content-Type")
     ->Option.getExn
-    ->expect(t, _)
+    ->(expect(t, _))
     ->Expect.String.toContain("multipart/form-data")
   })
 })

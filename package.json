@@ -16,8 +16,10 @@
   ],
   "scripts": {
     "build": "rescript build -with-deps",
+    "build:ci": "rescript build -warn-error +110",
     "clean": "rescript clean",
     "format": "rescript format -all",
+    "format:ci": "rescript format -all --check",
     "start": "rescript build -w",
     "test": "vitest --silent"
   },

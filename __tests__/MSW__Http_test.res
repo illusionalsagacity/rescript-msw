@@ -61,7 +61,7 @@ describe("MSW__Http", () => {
 
         JsonCombinators.Json.decode(json, Decode.stockPrice)
         ->Result.getExn
-        ->expect(t, _)
+        ->(expect(t, _))
         ->Expect.toEqual(value)
       },
     )
@@ -89,7 +89,7 @@ describe("MSW__Http", () => {
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Result.getExn
-        ->expect(t, _)
+        ->(expect(t, _))
         ->Expect.toEqual(value)
       },
     )
@@ -117,7 +117,7 @@ describe("MSW__Http", () => {
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Result.getExn
-        ->expect(t, _)
+        ->(expect(t, _))
         ->Expect.toEqual(value)
       },
     )
@@ -145,7 +145,7 @@ describe("MSW__Http", () => {
         json
         ->JsonCombinators.Json.decode(Decode.stockPrice)
         ->Result.getExn
-        ->expect(t, _)
+        ->(expect(t, _))
         ->Expect.toEqual(value)
       },
     )
@@ -165,7 +165,7 @@ describe("MSW__Http", () => {
         )
 
         let response = await Fetch.fetch(url, {method: #DELETE})
-        response->Fetch.Response.statusText->expect(t, _)->Expect.toEqual("No Content")
+        response->Fetch.Response.statusText->(expect(t, _))->Expect.toEqual("No Content")
       },
     )
   })
@@ -184,7 +184,7 @@ describe("MSW__Http", () => {
         )
 
         let response = await Fetch.fetch(url, {method: #OPTIONS})
-        response->Fetch.Response.statusText->expect(t, _)->Expect.toEqual("No Content")
+        response->Fetch.Response.statusText->(expect(t, _))->Expect.toEqual("No Content")
       },
     )
   })
