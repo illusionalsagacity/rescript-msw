@@ -215,7 +215,7 @@ describe("MSW__Http", () => {
         let error = Option.getExn(result)
         let name = Js.Exn.name(error)->Option.getExn
         let message = Js.Exn.message(error)->Option.getExn
-        (name, message)->expect->Expect.not->Expect.toEqual(("TypeError", "Failed to fetch"))
+        (name, message)->expect->Expect.toEqual(("TypeError", "Failed to fetch"))
       },
     )
   })
