@@ -1,0 +1,56 @@
+{
+  "name": "@illusionalsagacity/rescript-msw",
+  "uncurried": true,
+  "jsx": {
+    "version": 4,
+    "mode": "automatic"
+  },
+  "package-specs": [{
+    "module": "esmodule",
+    "in-source": true
+  }],
+  "suffix": ".res.js",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": false
+    },
+    {
+      "dir": "__tests__",
+      "subdirs": false,
+      "type": "dev"
+    },
+    {
+      "dir": "testUtils",
+      "subdirs": false,
+      "type": "dev"
+    }
+  ],
+  "bsc-flags": [],
+  "bs-dependencies": ["@glennsl/rescript-fetch"],
+  "ppx-flags": ["@reasonml-community/graphql-ppx/ppx"],
+  "bs-dev-dependencies": [
+    "@rescript/core",
+    "@rescript/react",
+    "@reasonml-community/graphql-ppx",
+    "rescript-apollo-client",
+    "rescript-vitest",
+    "@glennsl/rescript-json-combinators"
+  ],
+  "warnings": {
+    "number": "+A-42-48",
+    "error": "+A-3-44-102"
+  },
+  "graphql": {
+    "schema": "graphql_schema.json",
+    "uncurried": true,
+    "apolloMode": true,
+    "extendMutation": "ApolloClient.GraphQL_PPX.ExtendMutation",
+    "extendQuery": "ApolloClient.GraphQL_PPX.ExtendQuery",
+    "extendSubscription": "ApolloClient.GraphQL_PPX.ExtendSubscription",
+    "templateTagReturnType": "ApolloClient.GraphQL_PPX.templateTagReturnType",
+    "templateTagImport": "gql",
+    "templateTagLocation": "@apollo/client",
+    "templateTagIsFunction": true
+  }
+}
