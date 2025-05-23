@@ -14,6 +14,7 @@ export default defineConfig({
         fallbackCJS: true,
       },
     },
+    reporters: process.env.GITHUB_ACTIONS ? ['verbose', 'github-actions'] : ['default'],
     deps: {
       optimizer: {
         ssr: {
