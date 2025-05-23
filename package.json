@@ -19,7 +19,7 @@
     "build:ci": "rescript build -warn-error +110",
     "clean": "rescript clean",
     "format": "rescript format -all",
-    "format:ci": "rescript format -all --check",
+    "format:ci": "rescript format -all -check",
     "start": "rescript build -w",
     "test": "vitest --silent=passed-only",
     "test:ci": "CI=1 vitest --silent=passed-only --run"
