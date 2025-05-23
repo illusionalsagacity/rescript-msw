@@ -15,7 +15,17 @@ jobs:
       - uses: 'moonrepo/setup-toolchain@v0'
         with:
           auto-install: true
+      - uses: actions/cache/restore@v4
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            .yarn/cache
       - run: yarn install --immutable
       - run: yarn run format:ci
       - run: yarn run build:ci
       - run: yarn run test:ci
+      - uses: actions/cache/save@v4
+        with:
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            .yarn/cache
