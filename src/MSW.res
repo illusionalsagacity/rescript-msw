@@ -19,7 +19,7 @@ https://mswjs.io/docs/api/setup-worker
 
 Returns a new `MSW.ServiceWorker.t` instance.
 */
-@module("msw")
+@module("msw/browser")
 external setupWorker: unit => MSW__ServiceWorker.t = "setupWorker"
 
 /**
@@ -30,7 +30,7 @@ https://mswjs.io/docs/api/setup-worker
 
 Returns a new `MSW.ServiceWorker.t` instance.
 */
-@module("msw")
+@module("msw/browser")
 @variadic
 external setupWorkerWithHandlers: array<MSW__Common.requestHandler> => MSW__ServiceWorker.t =
   "setupWorker"
