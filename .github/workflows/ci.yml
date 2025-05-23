@@ -24,6 +24,13 @@ jobs:
       - run: yarn run format:ci
       - run: yarn run build:ci
       - run: yarn run test:ci
+      - uses: mikepenz/action-junit-report@v5
+        if: github.event_name == 'pull_request' && (success() || failure())
+        with:
+          check_name: 'Test Results'
+          fail_on_failure: true
+          report_paths: |
+            **/test-results/**/*.xml
       - uses: actions/cache/save@v4
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
