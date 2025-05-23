@@ -138,7 +138,14 @@ lib
 .graphql_ppx_cache
 .bsb.lock
 
+.prototools
+.vscode
+.github
+.changeset
+test-results
 __tests__
 graphql_schema.json
 jest.config.cjs
 *.res.js
+*.res.mjs
+*.res.cjs
