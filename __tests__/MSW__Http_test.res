@@ -8,6 +8,10 @@ type tick = {
   closingPrice: int,
 }
 
+@get
+external rejectsFn: Vitest_Types.assertion<unit => promise<'a>> => Vitest_Types.assertion<'a> =
+  "rejects"
+
 type stockPrice = {history: array<tick>}
 
 module Decode = {
@@ -204,18 +208,15 @@ describe("MSW__Http", () => {
           Http.get(#URL(url), async _options => Http.Response.error()),
         )
 
-        let result = try {
-          let _ = await Fetch.get(url)
-          Assert.unreachable(~message="Expected networkError", ())
-          None
-        } catch {
-        | Js.Exn.Error(e) => Some(e)
-        }
-
-        let error = Option.getExn(result)
-        let name = Js.Exn.name(error)->Option.getExn
-        let message = Js.Exn.message(error)->Option.getExn
-        (name, message)->expect->Expect.toEqual(("TypeError", "Failed to fetch"))
+        await expect(
+          async () => {
+            let response = await Fetch.fetch(url, {method: #GET})
+            Console.error2("Response: ", response)
+            Assert.unreachable(~message="Expected to throw a network error", ())
+          },
+        )
+        ->rejectsFn
+        ->Expect.Promise.toThrowError(~message="Failed to fetch")
       },
     )
   })
