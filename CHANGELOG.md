@@ -1,5 +1,12 @@
 # @illusionalsagacity/rescript-msw
 
+## 0.2.1
+
+### Patch Changes
+
+- a8875de: Fixes the binding for `MSW.setupWorker` to import from "msw/browser" instead of "msw"
+- a8875de: Fixes the binding signature of MSW.GraphQL.operation taking a sync callback instead of async like the rest
+
 ## 0.2.0
 
 ### Minor Changes
