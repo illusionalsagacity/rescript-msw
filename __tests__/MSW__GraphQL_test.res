@@ -66,8 +66,7 @@ describe("MSW__GraphQL", () => {
 
     let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
 
-    expect(result)
-    ->Expect.toEqual(
+    expect(result)->Expect.toEqual(
       Ok({
         networkStatus: Ready,
         error: None,
@@ -118,8 +117,7 @@ describe("MSW__GraphQL", () => {
 
     let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
 
-    expect(result)
-    ->Expect.toEqual(
+    expect(result)->Expect.toEqual(
       Ok({
         networkStatus: Ready,
         error: None,
