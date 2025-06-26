@@ -1,0 +1,11 @@
+diff --git a/bsconfig.json b/bsconfig.json
+index f28bec54b67f446d43648d312eb2fdd9fad8318b..1b1b8f3d3445c7c9d9c60457244d6de5d6085d13 100644
+--- a/bsconfig.json
++++ b/bsconfig.json
+@@ -18,5 +18,5 @@
+     }
+   ],
+   "suffix": ".bs.js",
+-  "bs-dependencies": ["@reasonml-community/graphql-ppx", "@rescript/react"]
++  "bs-dependencies": ["@illusionalsagacity/graphql-ppx", "@rescript/react"]
+ }

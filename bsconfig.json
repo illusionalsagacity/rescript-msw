@@ -28,11 +28,11 @@
   ],
   "bsc-flags": [],
   "bs-dependencies": ["@glennsl/rescript-fetch"],
-  "ppx-flags": ["@reasonml-community/graphql-ppx/ppx"],
+  "ppx-flags": ["@illusionalsagacity/graphql-ppx/ppx"],
   "bs-dev-dependencies": [
     "@rescript/core",
     "@rescript/react",
-    "@reasonml-community/graphql-ppx",
+    "@illusionalsagacity/graphql-ppx",
     "rescript-apollo-client",
     "rescript-vitest",
     "@glennsl/rescript-json-combinators"
@@ -42,6 +42,7 @@
     "error": "+A-3-44-102"
   },
   "graphql": {
+    "uncurried": false,
     "schema": "graphql_schema.json",
     "uncurried": true,
     "apolloMode": true,

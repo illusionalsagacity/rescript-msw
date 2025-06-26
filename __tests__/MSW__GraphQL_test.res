@@ -38,7 +38,8 @@ describe("MSW__GraphQL", () => {
 
   module UserQueryWithFragmentHandler = MSW__GraphQL__Response.Make(QueryB.UserQueryWithFragment)
 
-  testAsync("should return data for response", async t => {
+  testAsync("should return data for response", async ctx => {
+    let expect = expect(ctx, ...)
     MSWServerInstance.server->MSW.Server.use({
       open MSW.GraphQL
 
@@ -65,8 +66,7 @@ describe("MSW__GraphQL", () => {
 
     let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
 
-    t
-    ->expect(result)
+    expect(result)
     ->Expect.toEqual(
       Ok({
         networkStatus: Ready,
@@ -84,7 +84,8 @@ describe("MSW__GraphQL", () => {
     )
   })
 
-  testAsync("should return data for non-ppx response", async t => {
+  testAsync("should return data for non-ppx response", async ctx => {
+    let expect = expect(ctx, ...)
     MSWServerInstance.server->MSW.Server.use({
       MSW.GraphQL.query(
         #Name("UserQueryWithFragment"),
@@ -117,8 +118,7 @@ describe("MSW__GraphQL", () => {
 
     let result = await client.query(~query=module(QueryB.UserQueryWithFragment), {id: "test_id"})
 
-    t
-    ->expect(result)
+    expect(result)
     ->Expect.toEqual(
       Ok({
         networkStatus: Ready,
@@ -136,7 +136,7 @@ describe("MSW__GraphQL", () => {
     )
   })
 
-  testAsync("should return error for a 503", async _t => {
+  testAsync("should return error for a 503", async _ctx => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operation(
         async _ => {
@@ -170,7 +170,7 @@ describe("MSW__GraphQL", () => {
     }
   })
 
-  testAsync("should return error for a networkError", async _t => {
+  testAsync("should return error for a networkError", async _ctx => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operation(async _ => MSW.Http.Response.error(), ~options={once: true}),
     )
