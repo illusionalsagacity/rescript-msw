@@ -1,5 +1,11 @@
 # @illusionalsagacity/rescript-msw
 
+## 0.2.2
+
+### Patch Changes
+
+- dec2706: fixes the serviceWorkerOptions type being incorrect and not including the `scope` or other registration options
+
 ## 0.2.1
 
 ### Patch Changes
