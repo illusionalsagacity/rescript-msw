@@ -1,6 +1,5 @@
 open! RescriptCore
 open Vitest
-open! Concurrent
 open MSW
 
 let url = "http://localhost:8080"
@@ -14,7 +13,7 @@ let makeFixture = (status, statusText) => {
 describe(
   "runs tests in parallel without interference",
   Server.boundary(MSWServerInstance.server, () => {
-    Each.describe2(
+    For.testAsync(
       [
         (200, "OK"),
         (204, "Accepted"),
@@ -28,18 +27,14 @@ describe(
         (529, "Site is overloaded"),
       ],
       "receives an %d '%s' response",
-      (status, statusText) => {
-        itAsync(
-          "gets an OK response",
-          async _suite => {
-            MSWServerInstance.server->Server.use(makeFixture(status, statusText))
+      async ((status, statusText), ctx) => {
+        MSWServerInstance.server->Server.use(makeFixture(status, statusText))
 
-            let response = await fetch()
-            Fetch.Response.statusText(response)->expect->Expect.toEqual(statusText)
-            Fetch.Response.status(response)->expect->Expect.toEqual(status)
-          },
-        )
+        let response = await fetch()
+        ctx->expect(Fetch.Response.statusText(response))->Expect.toEqual(statusText)
+        ctx->expect(Fetch.Response.status(response))->Expect.toEqual(status)
       },
+      ~concurrent=true,
     )
   }),
 )

@@ -13,7 +13,7 @@ describe("Delay", () => {
     let _ = Vi.useRealTimers()
   })
 
-  testPromise("should handle a realistic delayed response", async _suite => {
+  testAsync("should handle a realistic delayed response", async ctx => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -28,10 +28,11 @@ describe("Delay", () => {
     let response = Fetch.fetch(url, {method: #GET})
     let _ = await Vi.advanceTimersToNextTimerAsync()
     let response = await response
-    response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
+    let statusText = Fetch.Response.statusText(response)
+    ctx->expect(statusText)->Expect.toEqual("No Content")
   })
 
-  testPromise("should handle an explicit delayed response", async _suite => {
+  testAsync("should handle an explicit delayed response", async ctx => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -46,10 +47,11 @@ describe("Delay", () => {
     let response = Fetch.fetch(url, {method: #GET})
     let _ = await Vi.advanceTimersToNextTimerAsync()
     let response = await response
-    response->Fetch.Response.statusText->expect->Expect.toEqual("No Content")
+    let statusText = Fetch.Response.statusText(response)
+    ctx->expect(statusText)->Expect.toEqual("No Content")
   })
 
-  testPromise("should handle an infinitely delayed response", async _suite => {
+  testAsync("should handle an infinitely delayed response", async ctx => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -73,10 +75,10 @@ describe("Delay", () => {
     let _ = await Vi.advanceTimersToNextTimerAsync()
     let response = await response
 
-    response->expect->Expect.toEqual(#timedOut)
+    ctx->expect(response)->Expect.toEqual(#timedOut)
   })
 
-  testPromise("should handle an aborted response", async _suite => {
+  testAsync("should handle an aborted response", async ctx => {
     MSWServerInstance.server->Server.use(
       Http.allWithOptions(
         #URL(url),
@@ -91,14 +93,13 @@ describe("Delay", () => {
     let signal = Fetch.AbortSignal.timeout(200)
     let response = Fetch.fetch(url, {method: #GET, signal})->Promise.thenResolve(_ => #responded)
 
-    try {
-      // this doesn't actually work, because AbortSignal.timeout is not faked
-      // see: https://github.com/sinonjs/fake-timers/issues/418
-      let _ = await Vi.advanceTimersByTimeAsync(201)
-      let response = await response
-      response->expect->Expect.not->Expect.toEqual(#responded)
-    } catch {
-    | Exn.Error(e) => Error.name(e)->Option.getExn->expect->Expect.toEqual("TimeoutError")
-    }
+    // this doesn't actually work, because AbortSignal.timeout is not faked
+    // see: https://github.com/sinonjs/fake-timers/issues/418
+    let _ = await Vi.advanceTimersByTimeAsync(201)
+
+    await ctx
+    ->expect(response)
+    ->Expect.Promise.rejects
+    ->Expect.Promise.toThrowError(~message="The operation was aborted due to timeout")
   })
 })

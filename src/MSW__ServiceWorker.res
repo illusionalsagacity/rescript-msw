@@ -1,7 +1,20 @@
 type t
 
-type serviceWorkerRegistrationOptions = {scope: string}
+type swType = [#classic | #"module"]
+type updateViaCache = [#all | #none | #imports]
 
+/** Options for service worker registration. */
+type serviceWorkerRegistrationOptions = {
+  scope?: string,
+  @as("type") type_?: swType,
+  updateViaCache?: updateViaCache,
+}
+
+/**
+Options for configuring the service worker used by MSW.
+
+https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register#options
+*/
 type serviceWorkerOptions = {
   url?: string,
   options?: serviceWorkerRegistrationOptions,
@@ -22,13 +35,13 @@ type options = {
  * https://mswjs.io/docs/api/setup-worker/start
  */
 @send
-external start: t => unit = "start"
+external start: t => promise<unit> = "start"
 
 /**
  * https://mswjs.io/docs/api/setup-worker/start
  */
 @send
-external startWithOptions: (t, options) => unit = "start"
+external startWithOptions: (t, options) => promise<unit> = "start"
 
 /**
  * https://mswjs.io/docs/api/setup-worker/stop
