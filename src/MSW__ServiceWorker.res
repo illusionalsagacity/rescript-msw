@@ -89,14 +89,14 @@ external resetHandlersWithReplace: (t, array<MSW__Common.requestHandler>) => uni
 external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
- * https://mswjs.io/docs/api/setup-worker/print-handlers
- * an alias of "printHandlers" for easier migration
+ * https://mswjs.io/docs/api/setup-worker/list-handlers
+ * This method accepts no arguments and returns a list of all handlers present on the worker object. It’s primarily designed for debugging and introspection purposes.
  */
 @send
-external listHandlers: t => unit = "printHandlers"
+external listHandlers: t => array<MSW__Common.requestHandler> = "listHandlers"
 
 /**
  https://mswjs.io/docs/api/life-cycle-events
  */
 @get
-external events: (t) => MSW__Events.t = "events"
+external events: t => MSW__Events.t = "events"

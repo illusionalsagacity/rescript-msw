@@ -208,14 +208,24 @@ external resetHandlersWithReplace: (t, array<MSW__Common.requestHandler>) => uni
 external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
- * https://mswjs.io/docs/api/setup-server/print-handlers
- * An alias of "printHandlers" for easier upgrading
+ * https://mswjs.io/docs/api/setup-server/list-handlers
+ * This method accepts no arguments and returns a list of all handlers present on the server object. It’s primarily designed for debugging and introspection purposes.
  */
 @send
-external listHandlers: t => unit = "printHandlers"
+external listHandlers: t => array<MSW__Common.requestHandler> = "listHandlers"
 
 /**
- https://mswjs.io/docs/api/life-cycle-events
- */
+Provides access to the life-cycle events emitter for this server instance.
+You can use this to subscribe to events like request start, match, unhandled, etc.
+https://mswjs.io/docs/api/life-cycle-events
+
+Example:
+```rescript
+let server = MSW.setupServerWithHandlers([...])
+server->MSW.Server.events->MSW.Events.on(#"request:start", event => {
+  Js.Console.log2("Request started:", event.request->Fetch.Request.url)
+})
+```
+*/
 @get
-external events: (t) => MSW__Events.t = "events"
+external events: t => MSW__Events.t = "events"
