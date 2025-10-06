@@ -1,5 +1,19 @@
 # @illusionalsagacity/rescript-msw
 
+## 0.3.0
+
+### Minor Changes
+
+- b330304: Adds ~options named argument to the GraphQL and Http bindings, deprecates the \*WithOptions bindings.
+
+  This is a breaking change for Rescript v10.
+
+### Patch Changes
+
+- e2bcae8: docs: Adds doc comments for most bindings
+- e402233: Fixes `listHandlers` binding
+- b330304: Fixes the binding signature of MSW.GraphQL.operation taking a sync callback instead of async like the rest
+
 ## 0.2.2
 
 ### Patch Changes
