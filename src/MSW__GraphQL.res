@@ -62,7 +62,7 @@ external mutationWithOptions: (
 @module("msw")
 @scope("graphql")
 external operation: (
-  resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
+  resolverOptions<'variables> => promise<MSW__HttpResponse.t>
 ) => MSW__Common.requestHandler = "operation"
 
 /**

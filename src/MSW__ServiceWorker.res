@@ -27,7 +27,7 @@ type options = {
   serviceWorker?: serviceWorkerOptions,
   quiet?: bool,
   waitUntilReady?: bool,
-  findWorker?: (. string, string) => bool,
+  findWorker?: (string, string) => bool,
   onUnhandledRequest?: [#bypass | #warn | #error],
 }
 

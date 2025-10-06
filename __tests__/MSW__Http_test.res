@@ -139,9 +139,10 @@ describe("MSW__Http", () => {
 
         let response = await Fetch.fetch(url, {method: #PATCH})
         let json = await Fetch.Response.json(response)
-        let result = json
-        ->JsonCombinators.Json.decode(Decode.stockPrice)
-        ->Result.getExn
+        let result =
+          json
+          ->JsonCombinators.Json.decode(Decode.stockPrice)
+          ->Result.getExn
         ctx->expect(result)->Expect.toEqual(value)
       },
     )

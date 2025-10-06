@@ -110,7 +110,8 @@ describe(
       )
       let response = asResponse(response)
 
-      let contentType = Fetch.Response.headers(response)->Fetch.Headers.get("Content-Type")->Belt.Option.getExn
+      let contentType =
+        Fetch.Response.headers(response)->Fetch.Headers.get("Content-Type")->Belt.Option.getExn
       ctx->expect(contentType)->Expect.String.toContain("multipart/form-data")
     })
   },
