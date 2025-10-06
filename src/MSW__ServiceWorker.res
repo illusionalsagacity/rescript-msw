@@ -126,20 +126,11 @@ https://mswjs.io/docs/api/setup-worker/restore-handlers
 external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
-Prints the list of current request handlers to the console.
-
-https://mswjs.io/docs/api/setup-worker/print-handlers
-*/
+ * https://mswjs.io/docs/api/setup-worker/list-handlers
+ * This method accepts no arguments and returns a list of all handlers present on the worker object. It’s primarily designed for debugging and introspection purposes.
+ */
 @send
-external printHandlers: t => unit = "printHandlers"
-
-/**
-An alias of `printHandlers`. Prints the list of current request handlers to the console.
-
-https://mswjs.io/docs/api/setup-worker/print-handlers
-*/
-@send
-external listHandlers: t => unit = "printHandlers"
+external listHandlers: t => array<MSW__Common.requestHandler> = "listHandlers"
 
 /**
 Provides access to the life-cycle events emitter for this service worker instance.

@@ -344,20 +344,11 @@ https://mswjs.io/docs/api/setup-server/restore-handlers
 external restoreHandlers: t => unit = "restoreHandlers"
 
 /**
-Prints the list of current request handlers to the console.
-
-https://mswjs.io/docs/api/setup-server/print-handlers
-*/
+ * https://mswjs.io/docs/api/setup-server/list-handlers
+ * This method accepts no arguments and returns a list of all handlers present on the server object. It’s primarily designed for debugging and introspection purposes.
+ */
 @send
-external printHandlers: t => unit = "printHandlers"
-
-/**
-An alias for `printHandlers`. Prints the list of current request handlers to the console.
-
-https://mswjs.io/docs/api/setup-server/print-handlers
-*/
-@send
-external listHandlers: t => unit = "printHandlers" // an alias for easier migration or preference
+external listHandlers: t => array<MSW__Common.requestHandler> = "listHandlers"
 
 /**
 Provides access to the life-cycle events emitter for this server instance.
