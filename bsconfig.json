@@ -5,10 +5,12 @@
     "version": 4,
     "mode": "automatic"
   },
-  "package-specs": [{
-    "module": "esmodule",
-    "in-source": true
-  }],
+  "package-specs": [
+    {
+      "module": "esmodule",
+      "in-source": true
+    }
+  ],
   "suffix": ".res.js",
   "sources": [
     {
@@ -24,6 +26,11 @@
       "dir": "testUtils",
       "subdirs": false,
       "type": "dev"
+    },
+    {
+      "dir": "e2e",
+      "subdirs": false,
+      "type": "dev"
     }
   ],
   "bsc-flags": [],
@@ -34,8 +41,7 @@
     "@rescript/react",
     "@illusionalsagacity/graphql-ppx",
     "rescript-apollo-client",
-    "rescript-vitest",
-    "@glennsl/rescript-json-combinators"
+    "rescript-vitest"
   ],
   "warnings": {
     "number": "+A-42-48",

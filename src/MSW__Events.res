@@ -22,7 +22,7 @@ module Event = {
     request: Fetch.Request.t,
     requestId: string,
     response?: Fetch.Response.t,
-    error?: Js.Exn.t,
+    error?: JsExn.t,
   }
 }
 

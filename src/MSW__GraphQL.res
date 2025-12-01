@@ -13,7 +13,7 @@ Options passed to a GraphQL resolver function.
 */
 type resolverOptions<'variables> = {
   request: Fetch.Request.t,
-  cookies: Js.Dict.t<string>,
+  cookies: dict<string>,
   operationName: string,
   variables: 'variables,
   query: string, // unknown?
@@ -37,10 +37,9 @@ MSW.GraphQL.query(#Name("GetUser"), ({variables}) => {
 })
 ```
 */
-@module("msw")
-@scope("graphql")
+@module("msw") @scope("graphql")
 external query: (
-  @unwrap [#Name(string) | #RegExp(Js.Re.t)],
+  @unwrap [#Name(string) | #RegExp(RegExp.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "query"
@@ -54,7 +53,7 @@ https://mswjs.io/docs/api/graphql/query
 @scope("graphql")
 @deprecated("Use query with the optional `~options` parameter instead.")
 external queryWithOptions: (
-  @unwrap [#Name(string) | #RegExp(Js.Re.t)],
+  @unwrap [#Name(string) | #RegExp(RegExp.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "query"
@@ -75,10 +74,9 @@ MSW.GraphQL.mutation(#Name("CreateUser"), async ({variables}) => {
 })
 ```
 */
-@module("msw")
-@scope("graphql")
+@module("msw") @scope("graphql")
 external mutation: (
-  @unwrap [#Name(string) | #RegExp(Js.Re.t)],
+  @unwrap [#Name(string) | #RegExp(RegExp.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "mutation"
@@ -88,11 +86,9 @@ Creates a GraphQL mutation handler with explicit options.
 
 https://mswjs.io/docs/api/graphql/mutation
 */
-@module("msw")
-@scope("graphql")
-@deprecated("Use mutation instead")
+@module("msw") @scope("graphql") @deprecated("Use mutation instead")
 external mutationWithOptions: (
-  @unwrap [#Name(string) | #RegExp(Js.Re.t)],
+  @unwrap [#Name(string) | #RegExp(RegExp.t)],
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "mutation"
@@ -102,8 +98,7 @@ Creates a GraphQL handler that intercepts any GraphQL operation (query or mutati
 
 https://mswjs.io/docs/api/graphql/operation
 */
-@module("msw")
-@scope("graphql")
+@module("msw") @scope("graphql")
 external operation: (
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
@@ -114,9 +109,7 @@ Creates a GraphQL handler that intercepts any GraphQL operation, with explicit o
 
 https://mswjs.io/docs/api/graphql/operation
 */
-@module("msw")
-@scope("graphql")
-@deprecated("Use operation instead")
+@module("msw") @scope("graphql") @deprecated("Use operation instead")
 external operationWithOptions: (
   resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
@@ -136,7 +129,7 @@ module Link = {
   @send
   external query: (
     graphqlScope,
-    @unwrap [#Name(string) | #RegExp(Js.Re.t)],
+    @unwrap [#Name(string) | #RegExp(RegExp.t)],
     resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
     ~options: MSW__HandlerOptions.t=?,
   ) => MSW__Common.requestHandler = "query"
@@ -147,7 +140,7 @@ module Link = {
   @send
   external mutation: (
     graphqlScope,
-    @unwrap [#Name(string) | #RegExp(Js.Re.t)],
+    @unwrap [#Name(string) | #RegExp(RegExp.t)],
     resolverOptions<'variables> => promise<MSW__HttpResponse.t>,
     ~options: MSW__HandlerOptions.t=?,
   ) => MSW__Common.requestHandler = "mutation"

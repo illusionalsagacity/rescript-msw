@@ -1,4 +1,3 @@
-open! RescriptCore
 open Vitest
 open Fetch
 
@@ -8,16 +7,13 @@ describe(
   "HttpResponse",
   () => {
     test("Creates a Response", ctx => {
-      let response = MSW.HttpResponse.make(
-        #Undefined(Js.undefined),
-        {status: 200, statusText: "OK"},
-      )
+      let response = MSW.HttpResponse.make(#Nullable(Undefined), {status: 200, statusText: "OK"})
 
       ctx->expect(response)->Expect.toBeTruthy
     })
 
     For.test([200, 204, 400, 500], "Creates a Response with status %d", (status, ctx) => {
-      let response = MSW.HttpResponse.make(#Undefined(Js.undefined), {status, statusText: "OK"})
+      let response = MSW.HttpResponse.make(#Nullable(Undefined), {status, statusText: "OK"})
       let response = asResponse(response)
 
       ctx->expect(Fetch.Response.status(response))->Expect.toEqual(status)
@@ -41,7 +37,7 @@ describe(
     })
 
     test("HttpResponse.json creates a Response", ctx => {
-      let response = MSW.HttpResponse.json(Js.Json.boolean(true), {status: 200, statusText: "OK"})
+      let response = MSW.HttpResponse.json(JSON.Encode.bool(true), {status: 200, statusText: "OK"})
       let response = asResponse(response)
 
       let contentType = Fetch.Response.headers(response)->Fetch.Headers.get("Content-Type")
@@ -94,7 +90,7 @@ describe(
 
     test("HttpResponse.arrayBuffer creates a Response", ctx => {
       let response = MSW.HttpResponse.arrayBuffer(
-        Js.TypedArray2.ArrayBuffer.make(10),
+        ArrayBuffer.make(10),
         {status: 200, statusText: "OK"},
       )
       let response = asResponse(response)

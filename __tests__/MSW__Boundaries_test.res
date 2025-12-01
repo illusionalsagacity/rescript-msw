@@ -1,4 +1,3 @@
-open! RescriptCore
 open Vitest
 open MSW
 
@@ -6,7 +5,7 @@ let url = "http://localhost:8080"
 let fetch = () => Fetch.fetch(url, {method: #GET})
 let makeFixture = (status, statusText) => {
   Http.get(#URL(url), async _options => {
-    Http.Response.make(#Undefined(Js.undefined), {status, statusText})
+    Http.Response.make(#Nullable(Undefined), {status, statusText})
   })
 }
 

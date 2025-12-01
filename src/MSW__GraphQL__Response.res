@@ -1,4 +1,4 @@
-external unsafeAsJson: 'a => Js.Json.t = "%identity"
+external unsafeAsJson: 'a => JSON.t = "%identity"
 
 /** Represents a location (line and column) in a GraphQL query, typically used in error reporting. */
 module Location = {
@@ -11,11 +11,11 @@ module Location = {
   /** Serializes a `Location.t` into a `Js.Json.t` object. */
   let serialize = (location: t) => {
     [
-      ("line", Js.Int.toFloat(location.line)->Js.Json.number),
-      ("column", Js.Int.toFloat(location.column)->Js.Json.number),
+      ("line", Int.toFloat(location.line)->JSON.Encode.float),
+      ("column", Int.toFloat(location.column)->JSON.Encode.float),
     ]
-    ->Js.Dict.fromArray
-    ->Js.Json.object_
+    ->Dict.fromArray
+    ->JSON.Encode.object
   }
 }
 
@@ -34,37 +34,37 @@ module GraphQLError = {
     /** The path to the response field that encountered the error. */
     path?: array<string>,
     /** Additional information about the error, specific to the server implementation. */
-    extensions?: Js.Dict.t<Js.Json.t>,
+    extensions?: dict<JSON.t>,
   }
 
   /** Serializes a `GraphQLError.t` into a `Js.Json.t` object. */
   let serialize = (error: t) => {
-    let extensions = error.extensions->Belt.Option.map(Js.Json.object_)
+    let extensions = error.extensions->Belt.Option.map(JSON.Encode.object)
     let locations = switch error.locations {
     | None => None
-    | Some(locations) => Js.Array2.map(locations, Location.serialize)->Js.Json.array->Some
+    | Some(locations) => Array.map(locations, Location.serialize)->JSON.Encode.array->Some
     }
-    let path = Belt.Option.map(error.path, Js.Json.stringArray)
-    let message = Js.Json.string(error.message)
+    let path = Belt.Option.map(error.path, JSON.Encode.stringArray)
+    let message = JSON.Encode.string(error.message)
 
-    let err = Js.Dict.fromArray([("message", message)])
+    let err = Dict.fromArray([("message", message)])
 
     switch locations {
-    | Some(locations) => Js.Dict.set(err, "locations", locations)
+    | Some(locations) => Dict.set(err, "locations", locations)
     | None => ()
     }
 
     switch path {
-    | Some(path) => Js.Dict.set(err, "path", path)
+    | Some(path) => Dict.set(err, "path", path)
     | None => ()
     }
 
     switch extensions {
-    | Some(extensions) => Js.Dict.set(err, "extensions", extensions)
+    | Some(extensions) => Dict.set(err, "extensions", extensions)
     | None => ()
     }
 
-    Js.Json.object_(err)
+    JSON.Encode.object(err)
   }
 }
 
@@ -78,7 +78,7 @@ extensions: An optional `Js.Json.t` object representing additional information p
 type t<'data> = {
   data: 'data,
   errors?: array<GraphQLError.t>,
-  extensions?: Js.Json.t,
+  extensions?: JSON.t,
 }
 
 /**
@@ -96,7 +96,7 @@ module Make: (Operation: MSW__Common.GraphQLPPXOperation) =>
   let graphql: (
     ~data: Operation.t,
     ~errors: array<GraphQLError.t>=?,
-    ~extensions: Js.Dict.t<Js.Json.t>=?,
+    ~extensions: dict<JSON.t>=?,
     MSW__HttpResponse.httpResponseInit,
   ) => MSW__HttpResponse.t
 } = (Operation: MSW__Common.GraphQLPPXOperation) => {
@@ -108,19 +108,19 @@ module Make: (Operation: MSW__Common.GraphQLPPXOperation) =>
    This is an internal helper used by the `graphql` function in this functor.
    */
   let serialize = (~data, ~errors=?, ~extensions=?) => {
-    let body = Js.Dict.fromArray([("data", Operation.serialize(data)->unsafeAsJson)])
+    let body = Dict.fromArray([("data", Operation.serialize(data)->unsafeAsJson)])
 
     switch errors {
     | Some(errors) =>
-      Js.Dict.set(body, "errors", Js.Array2.map(errors, GraphQLError.serialize)->Js.Json.array)
+      Dict.set(body, "errors", Array.map(errors, GraphQLError.serialize)->JSON.Encode.array)
     | None => ()
     }
     switch extensions {
-    | Some(extensions) => Js.Dict.set(body, "extensions", Js.Json.object_(extensions))
+    | Some(extensions) => Dict.set(body, "extensions", JSON.Encode.object(extensions))
     | None => ()
     }
 
-    Js.Json.object_(body)
+    JSON.Encode.object(body)
   }
 
   /**
@@ -157,17 +157,17 @@ Returns an `MSW.HttpResponse.t` ready to be returned from a handler.
  returns An `MSW.HttpResponse.t` ready to be returned from a handler.
  */
 let graphql = (~data, ~errors=?, ~extensions=?, httpResponseInit) => {
-  let body = Js.Dict.fromArray([("data", data)])
+  let body = Dict.fromArray([("data", data)])
 
   switch errors {
   | Some(errors) =>
-    Js.Dict.set(body, "errors", Js.Array2.map(errors, GraphQLError.serialize)->Js.Json.array)
+    Dict.set(body, "errors", Array.map(errors, GraphQLError.serialize)->JSON.Encode.array)
   | None => ()
   }
   switch extensions {
-  | Some(extensions) => Js.Dict.set(body, "extensions", Js.Json.object_(extensions))
+  | Some(extensions) => Dict.set(body, "extensions", JSON.Encode.object(extensions))
   | None => ()
   }
 
-  Js.Json.object_(body)->MSW__HttpResponse.json(httpResponseInit)
+  JSON.Encode.object(body)->MSW__HttpResponse.json(httpResponseInit)
 }

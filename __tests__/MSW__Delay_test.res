@@ -1,4 +1,3 @@
-open! RescriptCore
 open Vitest
 open MSW
 
@@ -19,7 +18,7 @@ describe("Delay", () => {
         #URL(url),
         async _options => {
           await Delay.realistic()
-          Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
+          Http.Response.make(#Nullable(Undefined), {status: 204, statusText: "No Content"})
         },
         ~options={once: true},
       ),
@@ -38,7 +37,7 @@ describe("Delay", () => {
         #URL(url),
         async _options => {
           await Delay.delay(1000)
-          Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
+          Http.Response.make(#Nullable(Undefined), {status: 204, statusText: "No Content"})
         },
         ~options={once: true},
       ),
@@ -57,7 +56,7 @@ describe("Delay", () => {
         #URL(url),
         async _options => {
           await Delay.infinite()
-          Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
+          Http.Response.make(#Nullable(Undefined), {status: 204, statusText: "No Content"})
         },
         ~options={once: true},
       ),
@@ -84,7 +83,7 @@ describe("Delay", () => {
         #URL(url),
         async _options => {
           await Delay.infinite()
-          Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
+          Http.Response.make(#Nullable(Undefined), {status: 204, statusText: "No Content"})
         },
         ~options={once: true},
       ),

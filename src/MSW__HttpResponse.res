@@ -44,17 +44,15 @@ let response = MSW.HttpResponse.make(
 )
 ```
 */
-@new
-@module("msw")
+@new @module("msw")
 external make: (
   @unwrap
   [
-    | #ArrayBuffer(Js.TypedArray2.ArrayBuffer.t)
+    | #ArrayBuffer(ArrayBuffer.t)
     | #Blob(Fetch.Blob.t)
     | #FormData(Fetch.FormData.t)
     | #String(string)
-    | #Null(Js.Null.t<_>)
-    | #Undefined(Js.Undefined.t<_>)
+    | #Nullable(nullable<_>)
   ],
   httpResponseInit,
 ) => t = "HttpResponse"
@@ -69,8 +67,7 @@ Usage:
 MSW.Http.get(#URL("/user"), async _ => MSW.HttpResponse.error())
 ```
 */
-@module("msw")
-@scope("HttpResponse")
+@module("msw") @scope("HttpResponse")
 external error: unit => t = "error"
 
 /**
@@ -83,8 +80,7 @@ Usage:
 MSW.HttpResponse.text("Hello world", {status: 200})
 ```
 */
-@module("msw")
-@scope("HttpResponse")
+@module("msw") @scope("HttpResponse")
 external text: (string, httpResponseInit) => t = "text"
 
 /**
@@ -97,8 +93,7 @@ Usage:
 MSW.HttpResponse.html("<h1>Hello</h1>", {status: 200})
 ```
 */
-@module("msw")
-@scope("HttpResponse")
+@module("msw") @scope("HttpResponse")
 external html: (string, httpResponseInit) => t = "html"
 
 /**
@@ -115,9 +110,8 @@ Usage:
   ->MSW.HttpResponse.json({status: 200})
 ```
 */
-@module("msw")
-@scope("HttpResponse")
-external json: (Js.Json.t, httpResponseInit) => t = "json"
+@module("msw") @scope("HttpResponse")
+external json: (JSON.t, httpResponseInit) => t = "json"
 
 /**
 Creates a `Response` instance with the `Content-Type: application/json` header.
@@ -131,8 +125,7 @@ Usage:
 MSW.HttpResponse.jsonObj({"id": "abc", "value": 123}, {status: 200})
 ```
 */
-@module("msw")
-@scope("HttpResponse")
+@module("msw") @scope("HttpResponse")
 external jsonObj: ({..} as 'json, httpResponseInit) => t = "json"
 
 /*
@@ -153,9 +146,8 @@ Sets the `Content-Type` header appropriately if not specified.
 
 https://mswjs.io/docs/api/http-response/#httpresponsearraybufferbody-init
 */
-@module("msw")
-@scope("HttpResponse")
-external arrayBuffer: (Js.TypedArray2.ArrayBuffer.t, httpResponseInit) => t = "arrayBuffer"
+@module("msw") @scope("HttpResponse")
+external arrayBuffer: (ArrayBuffer.t, httpResponseInit) => t = "arrayBuffer"
 
 /**
 Creates a `Response` instance with the given `FormData` as the response body.
@@ -170,6 +162,5 @@ Fetch.FormData.append(formData, "key", "value")
 MSW.HttpResponse.formData(formData, {status: 200})
 ```
 */
-@module("msw")
-@scope("HttpResponse")
+@module("msw") @scope("HttpResponse")
 external formData: (Fetch.FormData.t, httpResponseInit) => t = "formData"

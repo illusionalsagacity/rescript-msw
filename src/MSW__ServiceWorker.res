@@ -78,8 +78,7 @@ Appends multiple new request handlers to the existing list of handlers on the se
 
 https://mswjs.io/docs/api/setup-worker/use
 */
-@send
-@variadic
+@send @variadic
 external useMany: (t, array<MSW__Common.requestHandler>) => unit = "use"
 
 /**

@@ -1,4 +1,3 @@
-open! RescriptCore
 open Vitest
 
 type response<'a> = {..} as 'a
@@ -11,27 +10,51 @@ type tick = {
 type stockPrice = {history: array<tick>}
 
 module Decode = {
-  open JsonCombinators.Json.Decode
+  @warning("-4")
+  let point = json =>
+    switch json {
+    | JSON.Object(dict{
+        "openingPrice": JSON.Number(openingPrice),
+        "closingPrice": JSON.Number(closingPrice),
+      }) =>
+      Ok({
+        openingPrice: Int.fromFloat(openingPrice),
+        closingPrice: Int.fromFloat(closingPrice),
+      })
+    | _ => Error("Invalid tick object")
+    }
 
-  let point = object(field => {
-    openingPrice: field.required("openingPrice", int),
-    closingPrice: field.required("closingPrice", int),
-  })
+  // object(field => {
+  //   openingPrice: field.required("openingPrice", int),
+  //   closingPrice: field.required("closingPrice", int),
+  // })
 
-  let stockPrice = object(field => {
-    history: field.required("history", array(point)),
-  })
+  @warning("-4")
+  let stockPrice = json =>
+    switch json {
+    | JSON.Object(dict{"history": JSON.Array(historyJson)}) =>
+      Ok({
+        history: historyJson->Array.map(point)->Array.map(point => Result.getOrThrow(point)),
+      })
+    | _ => Error("Invalid stockPrice object")
+    }
 }
 
 module Encode = {
-  open JsonCombinators.Json.Encode
+  // open JsonCombinators.Json.Encode
 
-  let tick = value =>
-    object([("openingPrice", int(value.openingPrice)), ("closingPrice", int(value.closingPrice))])
+  let tick = value => JSON.Object(
+    dict{
+      "openingPrice": value.openingPrice->Int.toFloat->JSON.Number,
+      "closingPrice": value.closingPrice->Int.toFloat->JSON.Number,
+    },
+  )
+  // object([("openingPrice", int(value.openingPrice)), ("closingPrice", int(value.closingPrice))])
 
-  let arrayOfTicks = array(tick)
+  let arrayOfTicks = values => values->Array.map(tick)->JSON.Array
 
-  let stockPrice = value => object([("history", arrayOfTicks(value.history))])
+  let stockPrice = value => JSON.Object(dict{"history": arrayOfTicks(value.history)})
+  // object([("history", arrayOfTicks(value.history))])
 }
 
 let url = "http://localhost:8080"
@@ -59,7 +82,7 @@ describe("MSW__Http", () => {
         let result = await Fetch.fetch(url, {method: #GET})
         let json = await Fetch.Response.json(result)
 
-        let decoded = JsonCombinators.Json.decode(json, Decode.stockPrice)->Belt.Result.getExn
+        let decoded = json->Decode.stockPrice->Result.getOrThrow
         ctx->expect(decoded)->Expect.toEqual(value)
       },
     )
@@ -84,10 +107,7 @@ describe("MSW__Http", () => {
 
         let response = await Fetch.fetch(url, {method: #POST})
         let json = await Fetch.Response.json(response)
-        let result =
-          json
-          ->JsonCombinators.Json.decode(Decode.stockPrice)
-          ->Result.getExn
+        let result = json->Decode.stockPrice->Result.getOrThrow
 
         ctx->expect(result)->Expect.toEqual(value)
       },
@@ -113,10 +133,7 @@ describe("MSW__Http", () => {
 
         let response = await Fetch.fetch(url, {method: #PUT})
         let json = await Fetch.Response.json(response)
-        let result =
-          json
-          ->JsonCombinators.Json.decode(Decode.stockPrice)
-          ->Result.getExn
+        let result = json->Decode.stockPrice->Result.getOrThrow
         ctx->expect(result)->Expect.toEqual(value)
       },
     )
@@ -143,8 +160,8 @@ describe("MSW__Http", () => {
         let json = await Fetch.Response.json(response)
         let result =
           json
-          ->JsonCombinators.Json.decode(Decode.stockPrice)
-          ->Result.getExn
+          ->Decode.stockPrice
+          ->Result.getOrThrow
         ctx->expect(result)->Expect.toEqual(value)
       },
     )
@@ -158,7 +175,7 @@ describe("MSW__Http", () => {
           Http.delete(
             #URL(url),
             async _options => {
-              Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
+              Http.Response.make(#Nullable(Undefined), {status: 204, statusText: "No Content"})
             },
           ),
         )
@@ -179,7 +196,7 @@ describe("MSW__Http", () => {
           Http.options(
             #URL(url),
             async _options => {
-              Http.Response.make(#Undefined(Js.undefined), {status: 204, statusText: "No Content"})
+              Http.Response.make(#Nullable(Undefined), {status: 204, statusText: "No Content"})
             },
           ),
         )

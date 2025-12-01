@@ -16,8 +16,8 @@ params: A dictionary of parameters extracted from the request URL path if a path
 */
 type resolverOptions = {
   request: Fetch.Request.t,
-  cookies: Js.Dict.t<string>,
-  params: Js.Dict.t<string>,
+  cookies: dict<string>,
+  params: dict<string>,
 }
 
 /**
@@ -34,10 +34,9 @@ MSW.Http.all(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external all: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "all"
@@ -47,11 +46,9 @@ Creates a handler that intercepts any HTTP request method, with explicit options
 
 https://mswjs.io/docs/api/http/all
 */
-@deprecated("Use `all` with `~options` parameter instead")
-@module("msw")
-@scope("http")
+@deprecated("Use `all` with `~options` parameter instead") @module("msw") @scope("http")
 external allWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "all"
@@ -71,10 +68,9 @@ MSW.Http.head(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external head: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "head"
@@ -86,7 +82,7 @@ Creates a handler for HTTP HEAD requests, with explicit options.
 @module("msw")
 @scope("http")
 external headWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "head"
@@ -108,10 +104,9 @@ MSW.Http.get(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external get: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "get"
@@ -123,7 +118,7 @@ Creates a handler for HTTP GET requests, with explicit options.
 @module("msw")
 @scope("http")
 external getWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "get"
@@ -145,10 +140,9 @@ MSW.Http.post(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external post: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "post"
@@ -160,7 +154,7 @@ Creates a handler for HTTP POST requests, with explicit options.
 @module("msw")
 @scope("http")
 external postWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "post"
@@ -181,10 +175,9 @@ MSW.Http.put(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external put: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "put"
@@ -196,7 +189,7 @@ Creates a handler for HTTP PUT requests, with explicit options.
 @module("msw")
 @scope("http")
 external putWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "put"
@@ -221,10 +214,9 @@ MSW.Http.patch(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external patch: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "patch"
@@ -236,7 +228,7 @@ Creates a handler for HTTP PATCH requests, with explicit options.
 @module("msw")
 @scope("http")
 external patchWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "patch"
@@ -256,10 +248,9 @@ MSW.Http.delete(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external delete: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "delete"
@@ -271,7 +262,7 @@ Creates a handler for HTTP DELETE requests, with explicit options.
 @module("msw")
 @scope("http")
 external deleteWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "delete"
@@ -291,10 +282,9 @@ MSW.Http.options(
 )
 ```
 */
-@module("msw")
-@scope("http")
+@module("msw") @scope("http")
 external options: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   ~options: MSW__HandlerOptions.t=?,
 ) => MSW__Common.requestHandler = "options"
@@ -306,7 +296,7 @@ Creates a handler for HTTP OPTIONS requests, with explicit options.
 @module("msw")
 @scope("http")
 external optionsWithOptions: (
-  @unwrap [#URL(string) | #RegExp(Js.Re.t) | #URLObject(Url.t)],
+  @unwrap [#URL(string) | #RegExp(RegExp.t) | #URLObject(MSW__Url.t)],
   resolverOptions => promise<MSW__HttpResponse.t>,
   MSW__HandlerOptions.t,
 ) => MSW__Common.requestHandler = "options"

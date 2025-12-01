@@ -1,4 +1,3 @@
-open! RescriptCore
 open Vitest
 
 module UserQuery = %graphql(`
@@ -50,7 +49,10 @@ describe("MSW__GraphQL", () => {
             ~data={
               userById: Some({
                 __typename: "User",
-                id: variables->Js.Dict.get("id")->Option.getExn,
+                id: switch variables {
+                | dict{"id": id} => id
+                | _ => "unknown_id"
+                },
                 avatarUrl: Some("http://test.com/avatar.png"),
                 fullName: "John Doe",
               }),
@@ -90,22 +92,17 @@ describe("MSW__GraphQL", () => {
         #Name("UserQueryWithFragment"),
         async ({variables, _}) => {
           MSW.GraphQL.Response.graphql(
-            ~data=Dict.fromArray([
-              (
-                "userById",
-                Dict.fromArray([
-                  ("__typename", JSON.Encode.string("User")),
-                  (
-                    "id",
-                    variables
-                    ->Js.Dict.get("id")
-                    ->Option.mapOr(JSON.Encode.null, JSON.Encode.string),
-                  ),
-                  ("avatarUrl", JSON.Encode.string("http://test.com/avatar.png")),
-                  ("fullName", JSON.Encode.string("John Doe")),
-                ])->JSON.Encode.object,
-              ),
-            ])->JSON.Encode.object,
+            ~data=dict{
+              "userById": dict{
+                "__typename": JSON.String("User"),
+                "id": switch variables {
+                | dict{"id": id} => JSON.String(id)
+                | _ => JSON.Null
+                },
+                "avatarUrl": JSON.String("http://test.com/avatar.png"),
+                "fullName": JSON.String("John Doe"),
+              }->JSON.Object,
+            }->JSON.Object,
             {
               status: 200,
               statusText: "OK",
@@ -138,7 +135,7 @@ describe("MSW__GraphQL", () => {
     MSWServerInstance.server->MSW.Server.use(
       MSW.GraphQL.operation(
         async _ => {
-          MSW.Http.Response.make(#Null(Js.null), {status: 503, statusText: "Service Unavailable"})
+          MSW.Http.Response.make(#Nullable(Null), {status: 503, statusText: "Service Unavailable"})
         },
         ~options={once: true},
       ),
@@ -155,9 +152,9 @@ describe("MSW__GraphQL", () => {
 
     let networkError =
       result
-      ->Option.getExn
+      ->Option.getOrThrow
       ->(v => v.ApolloClient.Types.ApolloError.networkError)
-      ->Option.getExn
+      ->Option.getOrThrow
 
     switch networkError {
     | ApolloClient.Types.ApolloError.FetchFailure(_) => Assert.assert_(true)
@@ -184,9 +181,9 @@ describe("MSW__GraphQL", () => {
 
     let networkError =
       result
-      ->Option.getExn
+      ->Option.getOrThrow
       ->(v => v.ApolloClient.Types.ApolloError.networkError)
-      ->Option.getExn
+      ->Option.getOrThrow
 
     switch networkError {
     | ApolloClient.Types.ApolloError.FetchFailure(_) => Assert.assert_(true)

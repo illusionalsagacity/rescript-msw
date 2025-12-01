@@ -294,8 +294,7 @@ server->MSW.Server.useMany([
 ])
 ```
 */
-@send
-@variadic
+@send @variadic
 external useMany: (t, array<MSW__Common.requestHandler>) => unit = "use"
 
 /**
